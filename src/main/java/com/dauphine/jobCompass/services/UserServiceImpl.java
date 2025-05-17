@@ -1,6 +1,7 @@
 package com.dauphine.jobCompass.services;
 
 import com.dauphine.jobCompass.dto.UserCreationRequest;
+import com.dauphine.jobCompass.dto.UserDTO;
 import com.dauphine.jobCompass.dto.UserUpdateRequest;
 import com.dauphine.jobCompass.mapper.UserMapper;
 import com.dauphine.jobCompass.model.User;
@@ -10,15 +11,17 @@ import org.springframework.stereotype.Service;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServiceImpl implements  UserService{
     private final UserRepository userRepository;
-    //private final UserMapper userMapper;
+    private final UserMapper userMapper;
   //  private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository){
+    public UserServiceImpl(UserRepository userRepository,UserMapper userMapper){
         this.userRepository=userRepository;
-       // this.userMapper=userMapper;
+        this.userMapper=userMapper;
     }
     @Override
     public User create(UserCreationRequest request) {
@@ -26,9 +29,11 @@ public class UserServiceImpl implements  UserService{
     }
 
     @Override
-    public List<User> getAll() {
+    public List<UserDTO> getAll() {
         List<User> users = userRepository.findAll();
-        return null;
+        return users.stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
 
     }
 

@@ -1,6 +1,7 @@
 package com.dauphine.jobCompass.dto;
 
 import com.dauphine.jobCompass.model.enums.UserType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +13,7 @@ public class UserDTO {
     private String lastName;
     private String phone;
     private UserType userType;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
     private List<CompanyDTO> companies;
 

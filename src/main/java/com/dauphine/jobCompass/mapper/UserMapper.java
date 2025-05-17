@@ -4,11 +4,11 @@ import com.dauphine.jobCompass.dto.SimpleUserDTO;
 import com.dauphine.jobCompass.dto.UserCreationRequest;
 import com.dauphine.jobCompass.dto.UserDTO;
 import com.dauphine.jobCompass.model.User;
-//import org.mapstruct.Mapper;
+import org.mapstruct.Mapper;
 
 
 import java.util.List;
-//@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring")
 public interface UserMapper {
     UserDTO toDto(User user);
 

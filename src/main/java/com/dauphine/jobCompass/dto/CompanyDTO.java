@@ -1,5 +1,7 @@
 package com.dauphine.jobCompass.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 
 public class CompanyDTO {
@@ -8,6 +10,7 @@ public class CompanyDTO {
     private String description;
     private String location;
     private String website;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
     private SimpleUserDTO owner;
 

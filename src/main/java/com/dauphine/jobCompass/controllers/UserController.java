@@ -1,6 +1,7 @@
 package com.dauphine.jobCompass.controllers;
 
 import com.dauphine.jobCompass.dto.UserCreationRequest;
+import com.dauphine.jobCompass.dto.UserDTO;
 import com.dauphine.jobCompass.dto.UserUpdateRequest;
 import com.dauphine.jobCompass.model.User;
 import com.dauphine.jobCompass.services.UserService;
@@ -18,7 +19,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return this.userService.getAll();
     }
 /*
