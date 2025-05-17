@@ -1,41 +1,39 @@
 package com.dauphine.jobComapss.model;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Getter;
 
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
-@Table(name = "companies")
+@Table(name = "applications")
 @Getter @Setter @NoArgsConstructor
-public class Company {
+public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "company_id")
+    @Column(name = "application_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", nullable = false)
-    private User owner;
+    @JoinColumn(name = "job_id", nullable = false)
+    private Job job;
 
-    @Column(nullable = false, length = 100)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String coverLetter;
 
-    private String location;
-    private String website;
+    @Column(name = "resume_url")
+    private String resumeUrl;
+
+    @Column(length = 10)
+    private String status = "pending";
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
-
-    @OneToMany(mappedBy = "company")
-    private List<Job> jobs = new ArrayList<>();
 }
