@@ -1,18 +1,12 @@
-package com.dauphine.jobComapss.model;
+package com.dauphine.jobCompass.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "skills")
-@Getter @Setter @NoArgsConstructor
 public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +18,28 @@ public class Skill {
 
     @ManyToMany(mappedBy = "requiredSkills")
     private Set<Job> jobs = new HashSet<>();
+
+    public Set<Job> getJobs() {
+        return jobs;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setJobs(Set<Job> jobs) {
+        this.jobs = jobs;
+    }
 }

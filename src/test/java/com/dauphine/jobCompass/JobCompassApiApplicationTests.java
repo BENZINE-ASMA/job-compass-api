@@ -1,4 +1,4 @@
-package com.dauphine.jobComapss;
+package com.dauphine.jobCompass;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
