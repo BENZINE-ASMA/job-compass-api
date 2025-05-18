@@ -9,8 +9,7 @@ import java.util.UUID;
 @Table(name = "applications")
 public class Application {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "application_id", columnDefinition = "serial")
+    @Column(name = "application_id", columnDefinition = "uuid")
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -11,8 +11,7 @@ import java.util.UUID;
 @Table(name = "job_categories")
 public class JobCategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
+    @Column(name = "category_id", columnDefinition = "uuid")
     private UUID id;
 
     @Column(nullable = false, unique = true, length = 50)

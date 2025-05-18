@@ -39,7 +39,7 @@ public class User {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "owner")
-    private List<Company> companies = new ArrayList<>();
+    private List<Job> jobs = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Application> applications = new ArrayList<>();
@@ -109,13 +109,6 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public List<Company> getCompanies() {
-        return companies;
-    }
-
-    public void setCompanies(List<Company> companies) {
-        this.companies = companies;
-    }
 
     public List<Application> getApplications() {
         return applications;

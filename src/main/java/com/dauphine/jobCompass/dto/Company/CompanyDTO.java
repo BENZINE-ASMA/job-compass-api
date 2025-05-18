@@ -14,7 +14,6 @@ public class CompanyDTO {
     private String website;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
-    private SimpleUserDTO owner;
 
     public UUID getId() {
         return id;
@@ -24,13 +23,6 @@ public class CompanyDTO {
         this.id = id;
     }
 
-    public SimpleUserDTO getOwner() {
-        return owner;
-    }
-
-    public void setOwner(SimpleUserDTO owner) {
-        this.owner = owner;
-    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
