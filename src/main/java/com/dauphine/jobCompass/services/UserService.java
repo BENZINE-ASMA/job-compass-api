@@ -1,9 +1,9 @@
 package com.dauphine.jobCompass.services;
 
-import com.dauphine.jobCompass.dto.SimpleUserDTO;
-import com.dauphine.jobCompass.dto.UserCreationRequest;
-import com.dauphine.jobCompass.dto.UserDTO;
-import com.dauphine.jobCompass.dto.UserUpdateRequest;
+import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
+import com.dauphine.jobCompass.dto.User.UserCreationRequest;
+import com.dauphine.jobCompass.dto.User.UserDTO;
+import com.dauphine.jobCompass.dto.User.UserUpdateRequest;
 import com.dauphine.jobCompass.model.User;
 import com.dauphine.jobCompass.model.enums.UserType;
 
@@ -16,7 +16,6 @@ public interface UserService {
     List<SimpleUserDTO> getAllSimpleUsers();
     SimpleUserDTO getSimpleUserByEmail(String email);
     User getById(Long id);
-    User getByEmail(String email);
     List<User> getByUserType(UserType userType);
 
     User update(Long id, UserUpdateRequest request);

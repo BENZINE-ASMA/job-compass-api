@@ -1,6 +1,6 @@
 package com.dauphine.jobCompass.mapper;
 
-import com.dauphine.jobCompass.dto.ApplicationDTO;
+import com.dauphine.jobCompass.dto.Application.ApplicationDTO;
 import com.dauphine.jobCompass.model.Application;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

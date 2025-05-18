@@ -1,4 +1,4 @@
-package com.dauphine.jobCompass.dto;
+package com.dauphine.jobCompass.dto.Company;
 
 import java.util.UUID;
 

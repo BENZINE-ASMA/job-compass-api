@@ -1,5 +1,6 @@
-package com.dauphine.jobCompass.dto;
+package com.dauphine.jobCompass.dto.Company;
 
+import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package com.dauphine.jobCompass.dto;
+package com.dauphine.jobCompass.dto.User;
 
 import com.dauphine.jobCompass.model.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonFormat;

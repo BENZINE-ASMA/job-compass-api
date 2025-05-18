@@ -1,10 +1,8 @@
 package com.dauphine.jobCompass.controllers;
 
-import com.dauphine.jobCompass.dto.SimpleUserDTO;
-import com.dauphine.jobCompass.dto.UserCreationRequest;
-import com.dauphine.jobCompass.dto.UserDTO;
-import com.dauphine.jobCompass.dto.UserUpdateRequest;
-import com.dauphine.jobCompass.model.User;
+import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
+import com.dauphine.jobCompass.dto.User.UserCreationRequest;
+import com.dauphine.jobCompass.dto.User.UserDTO;
 import com.dauphine.jobCompass.services.UserService;
 import org.springframework.web.bind.annotation.*;
 

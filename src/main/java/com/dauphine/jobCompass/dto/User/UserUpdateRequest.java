@@ -1,32 +1,23 @@
-package com.dauphine.jobCompass.dto;
-
-
+package com.dauphine.jobCompass.dto.User;
 import com.dauphine.jobCompass.model.enums.UserType;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+public class UserUpdateRequest {
 
-public class UserCreationRequest {
-
-    @NotBlank(message = "Email is mandatory")
-    @Email(message = "Email should be valid")
+    @Email(message = "Must be a valid email format")
+    @Size(max = 100)
     private String email;
 
-    @NotBlank(message = "Password is mandatory")
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Size(min = 8, max = 100, message = "Password must be 8-100 characters")
     private String password;
 
-    @NotBlank(message = "First name is mandatory")
     private String firstName;
 
-    @NotBlank(message = "Last name is mandatory")
     private String lastName;
 
     private String phone;
 
-    @NotNull
     private UserType userType;
 
     public String getEmail() {

@@ -1,8 +1,8 @@
 package com.dauphine.jobCompass.mapper;
 
-import com.dauphine.jobCompass.dto.SimpleUserDTO;
-import com.dauphine.jobCompass.dto.UserCreationRequest;
-import com.dauphine.jobCompass.dto.UserDTO;
+import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
+import com.dauphine.jobCompass.dto.User.UserCreationRequest;
+import com.dauphine.jobCompass.dto.User.UserDTO;
 import com.dauphine.jobCompass.model.User;
 import org.mapstruct.Mapper;
 

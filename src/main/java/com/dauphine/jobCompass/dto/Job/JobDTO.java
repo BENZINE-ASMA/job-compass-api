@@ -1,4 +1,6 @@
-package com.dauphine.jobCompass.dto;
+package com.dauphine.jobCompass.dto.Job;
+
+import com.dauphine.jobCompass.dto.Company.SimpleCompanyDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
