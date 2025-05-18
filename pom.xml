@@ -61,6 +61,10 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.5.Final</version> <!-- ou la dernière version stable -->
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<!-- Pour que l'annotation processor fonctionne -->
 		<dependency>
@@ -72,6 +76,10 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 

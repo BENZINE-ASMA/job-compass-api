@@ -6,15 +6,15 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Integer  id;
+    @Column(name = "user_id", columnDefinition = "uuid")
+    private UUID id;
 
     @Column(nullable = false, unique = true, length = 100)
     private String email;
@@ -45,11 +45,11 @@ public class User {
     private List<Application> applications = new ArrayList<>();
 
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

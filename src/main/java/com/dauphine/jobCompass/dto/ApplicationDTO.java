@@ -1,9 +1,10 @@
 package com.dauphine.jobCompass.dto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class ApplicationDTO {
-    private Integer id;
+    private UUID id;
     private SimpleJobDTO job;
     private SimpleUserDTO user;
     private String coverLetter;
@@ -13,10 +14,10 @@ public class ApplicationDTO {
 
     // Getters et setters
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
     public SimpleJobDTO getJob() {

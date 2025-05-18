@@ -3,9 +3,10 @@ package com.dauphine.jobCompass.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 public class JobDTO {
-    private Integer id;
+    private UUID id;
     private String title;
     private String description;
     private String jobType;
@@ -18,11 +19,11 @@ public class JobDTO {
     private String categoryName;
     private Set<String> requiredSkills;
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

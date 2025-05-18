@@ -4,19 +4,20 @@ import jakarta.persistence.*;
 
 
 import java.io.Serializable;
+import java.util.UUID;
 
 // Classe pour la clé composée
 @Embeddable
 class JobSkillId implements Serializable {
     @Column(name = "job_id")
-    private Integer jobId;
+    private UUID jobId;
 
     @Column(name = "skill_id")
-    private Long skillId;
+    private UUID skillId;
 
     public JobSkillId() {}
 
-    public JobSkillId(Integer jobId, Long skillId) {
+    public JobSkillId(UUID jobId, UUID skillId) {
         this.jobId = jobId;
         this.skillId = skillId;
     }

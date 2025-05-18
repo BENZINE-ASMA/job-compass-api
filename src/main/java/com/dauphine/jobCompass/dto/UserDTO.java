@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public class UserDTO {
-    private Integer id;
+    private UUID id;
     private String email;
     private String firstName;
     private String lastName;
@@ -17,11 +18,11 @@ public class UserDTO {
     private LocalDateTime createdAt;
     private List<CompanyDTO> companies;
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

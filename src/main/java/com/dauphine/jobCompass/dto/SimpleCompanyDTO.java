@@ -1,14 +1,16 @@
 package com.dauphine.jobCompass.dto;
 
+import java.util.UUID;
+
 public class SimpleCompanyDTO {
-    private Long id;
+    private UUID id;
     private String name;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

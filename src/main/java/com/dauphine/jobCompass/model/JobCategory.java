@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "job_categories")
@@ -12,7 +13,7 @@ public class JobCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private Long id;
+    private UUID id;
 
     @Column(nullable = false, unique = true, length = 50)
     private String name;
@@ -20,11 +21,11 @@ public class JobCategory {
     @OneToMany(mappedBy = "category")
     private List<Job> jobs = new ArrayList<>();
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

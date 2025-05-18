@@ -1,5 +1,6 @@
 package com.dauphine.jobCompass.controllers;
 
+import com.dauphine.jobCompass.dto.SimpleUserDTO;
 import com.dauphine.jobCompass.dto.UserCreationRequest;
 import com.dauphine.jobCompass.dto.UserDTO;
 import com.dauphine.jobCompass.dto.UserUpdateRequest;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1")
 public class UserController {
     private final UserService userService;
 
@@ -18,9 +19,23 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/users")
+    public List<SimpleUserDTO> getAllSimpleUsers() {
+        return this.userService.getAllSimpleUsers();
+    }
+    @GetMapping("/users/details")
     public List<UserDTO> getAllUsers() {
+
         return this.userService.getAll();
+    }
+    @GetMapping("/users/{email}")
+    public SimpleUserDTO getSimpleUserByEmail(@PathVariable String email) {
+        return this.userService.getSimpleUserByEmail(email);
+    }
+    @PostMapping("auth/register")
+    public SimpleUserDTO createUser(@RequestBody UserCreationRequest userCreationRequest) {
+       return  this.userService.create(userCreationRequest);
+
     }
 /*
     @GetMapping("/{id}")

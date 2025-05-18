@@ -3,9 +3,10 @@ package com.dauphine.jobCompass.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class CompanyDTO {
-    private Long id;
+    private UUID id;
     private String name;
     private String description;
     private String location;
@@ -14,11 +15,11 @@ public class CompanyDTO {
     private LocalDateTime createdAt;
     private SimpleUserDTO owner;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

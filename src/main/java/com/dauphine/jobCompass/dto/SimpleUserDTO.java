@@ -1,16 +1,37 @@
 package com.dauphine.jobCompass.dto;
 
+import com.dauphine.jobCompass.model.enums.UserType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 public class SimpleUserDTO {
-    private Integer id;
+    private UUID id;
     private String email;
     private String firstName;
     private String lastName;
+    private String phone;
+    private UserType userType;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime createdAt;
+    public SimpleUserDTO() {}
 
-    public Integer getId() {
+    public SimpleUserDTO( String email, String firstName, String lastName, String phone, UserType userType) {
+        this.id = UUID.randomUUID();
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.userType = userType;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -36,5 +57,29 @@ public class SimpleUserDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
