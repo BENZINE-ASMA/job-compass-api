@@ -1,4 +1,4 @@
-package com.dauphine.jobCompass.services;
+package com.dauphine.jobCompass.services.user;
 
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.dauphine.jobCompass.dto.User.UserCreationRequest;

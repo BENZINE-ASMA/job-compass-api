@@ -3,10 +3,24 @@ package com.dauphine.jobCompass.controllers;
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.dauphine.jobCompass.dto.User.UserCreationRequest;
 import com.dauphine.jobCompass.dto.User.UserDTO;
-import com.dauphine.jobCompass.services.UserService;
+import com.dauphine.jobCompass.exceptions.UsernameNotFoundException;
+import com.dauphine.jobCompass.services.user.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+@Tag(
+        name = "User API",
+        description = "Endpoints for managing users"
+)
 
 @RestController
 @RequestMapping("/api/v1")
@@ -17,23 +31,55 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(summary = "Get all users with basic information",
+            description = "Retrieves all simple user's information")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved users")
+    })
     @GetMapping("/users")
-    public List<SimpleUserDTO> getAllSimpleUsers() {
-        return this.userService.getAllSimpleUsers();
+    public ResponseEntity<List<SimpleUserDTO>> getAllSimpleUsers() {
+
+        return ResponseEntity.ok(this.userService.getAllSimpleUsers());
     }
+
+    @Operation(summary = "Get all users with detailed information",
+            description = "Retrieves all users with full details")
     @GetMapping("/users/details")
-    public List<UserDTO> getAllUsers() {
-
-        return this.userService.getAll();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        return ResponseEntity.ok(this.userService.getAll());
     }
+
+    @Operation(summary = "Get user by email")
     @GetMapping("/users/{email}")
-    public SimpleUserDTO getSimpleUserByEmail(@PathVariable String email) {
-        return this.userService.getSimpleUserByEmail(email);
+    public ResponseEntity<SimpleUserDTO> getSimpleUserByEmail(
+            @Parameter(description = "email of user to retrieve", required = true)
+            @PathVariable String email) {
+        try {
+            SimpleUserDTO user = this.userService.getSimpleUserByEmail(email);
+            return ResponseEntity.ok(user);
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
-    @PostMapping("auth/register")
-    public SimpleUserDTO createUser(@RequestBody UserCreationRequest userCreationRequest) {
-       return  this.userService.create(userCreationRequest);
 
+    @Operation(summary = "Register a new user")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "User created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "409", description = "User already exists")
+    })
+    @PostMapping("auth/register")
+    public ResponseEntity<SimpleUserDTO> createUser(
+            @Parameter(description = "User data for registration", required = true)
+            @Valid @RequestBody UserCreationRequest userCreationRequest) {
+        try {
+            SimpleUserDTO createdUser = this.userService.create(userCreationRequest);
+            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 /*
     @GetMapping("/{id}")

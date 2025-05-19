@@ -1,6 +1,7 @@
 package com.dauphine.jobCompass.dto.Job;
 
 import com.dauphine.jobCompass.dto.Company.SimpleCompanyDTO;
+import com.dauphine.jobCompass.model.Skill;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ public class JobDTO {
     private LocalDate expiryDate;
     private SimpleCompanyDTO company;
     private String categoryName;
-    private Set<String> requiredSkills;
+    //private Set<Skill> requiredSkills;
 
     public UUID getId() {
         return id;
@@ -109,7 +110,7 @@ public class JobDTO {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
-
+/*
     public Set<String> getRequiredSkills() {
         return requiredSkills;
     }
@@ -117,4 +118,7 @@ public class JobDTO {
     public void setRequiredSkills(Set<String> requiredSkills) {
         this.requiredSkills = requiredSkills;
     }
+
+
+ */
 }

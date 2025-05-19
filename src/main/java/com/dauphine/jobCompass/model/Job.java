@@ -37,6 +37,7 @@ public class Job {
     private String jobType;
 
     private String salary;
+
     private String location;
 
     @Column(length = 10)
