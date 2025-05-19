@@ -38,6 +38,10 @@ public class User {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
     @OneToMany(mappedBy = "owner")
     private List<Job> jobs = new ArrayList<>();
 
@@ -116,6 +120,22 @@ public class User {
 
     public void setApplications(List<Application> applications) {
         this.applications = applications;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public List<Job> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<Job> jobs) {
+        this.jobs = jobs;
     }
 }
 

@@ -13,19 +13,25 @@ public class SimpleUserDTO {
     private String lastName;
     private String phone;
     private UserType userType;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
+
+    // Constructeur sans argument requis par certains frameworks (Jackson, JPA...)
     public SimpleUserDTO() {}
 
-    public SimpleUserDTO( String email, String firstName, String lastName, String phone, UserType userType) {
-        this.id = UUID.randomUUID();
+    // Constructeur avec paramètres, ne génère pas un nouvel id ni date par défaut — laisse ça à la couche service
+    public SimpleUserDTO(UUID id, String email, String firstName, String lastName, String phone, UserType userType, LocalDateTime createdAt) {
+        this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.userType = userType;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = createdAt;
     }
+
+    // Getters & Setters
 
     public UUID getId() {
         return id;

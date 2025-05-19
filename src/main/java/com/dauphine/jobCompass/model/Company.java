@@ -30,6 +30,9 @@ public class Company {
     @OneToMany(mappedBy = "company")
     private List<Job> jobs = new ArrayList<>();
 
+    @OneToMany(mappedBy = "company")
+    private List<User> employees = new ArrayList<>();
+
     public UUID getId() {
         return id;
     }
@@ -84,5 +87,13 @@ public class Company {
 
     public void setJobs(List<Job> jobs) {
         this.jobs = jobs;
+    }
+
+    public List<User> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<User> employees) {
+        this.employees = employees;
     }
 }
