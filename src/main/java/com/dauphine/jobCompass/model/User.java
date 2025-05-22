@@ -16,7 +16,7 @@ public class User {
     @Column(name = "user_id", columnDefinition = "uuid")
     private UUID id;
 
-    @Column(nullable = false, unique = true, length = 100)
+    @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
     @Column(name = "password_hash", nullable = false, length = 255)
@@ -28,11 +28,11 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @Column(length = 20)
+    @Column(name ="phone" , length = 20)
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "user_type", nullable = false)
     private UserType userType;
 
     @Column(name = "created_at", updatable = false)

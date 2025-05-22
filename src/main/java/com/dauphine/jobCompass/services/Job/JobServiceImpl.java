@@ -1,6 +1,7 @@
 package com.dauphine.jobCompass.services.Job;
 
 import com.dauphine.jobCompass.dto.Job.JobDTO;
+import com.dauphine.jobCompass.dto.JobFilters.JobFilters;
 import com.dauphine.jobCompass.mapper.JobMapper;
 import com.dauphine.jobCompass.model.Job;
 import com.dauphine.jobCompass.repositories.JobRepository;
@@ -23,4 +24,10 @@ public class JobServiceImpl implements JobService {
         List<Job> jobs = this.jobRepository.findAll();
         return jobs.stream().map(jobMapper::toDto).collect(Collectors.toList());
     }
+
+    public List<JobDTO> getFilteredJobs(JobFilters filters) {
+        List<Job> jobs = this.jobRepository.findFilteredJobs(filters.getSearch(),filters.getCategory(),filters.getContractType(),filters.getLocation());
+        return jobs.stream().map(jobMapper::toDto).collect(Collectors.toList());
+    }
+
 }

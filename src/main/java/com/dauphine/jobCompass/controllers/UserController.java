@@ -3,7 +3,10 @@ package com.dauphine.jobCompass.controllers;
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.dauphine.jobCompass.dto.User.UserCreationRequest;
 import com.dauphine.jobCompass.dto.User.UserDTO;
+import com.dauphine.jobCompass.exceptions.ApiErrorResponse;
+import com.dauphine.jobCompass.exceptions.UserEmailAlreadyExistsException;
 import com.dauphine.jobCompass.exceptions.UsernameNotFoundException;
+import com.dauphine.jobCompass.model.enums.UserType;
 import com.dauphine.jobCompass.services.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -69,18 +72,36 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
     @PostMapping("auth/register")
-    public ResponseEntity<SimpleUserDTO> createUser(
-            @Parameter(description = "User data for registration", required = true)
-            @Valid @RequestBody UserCreationRequest userCreationRequest) {
+    public ResponseEntity<?> createUser(
+            @RequestParam String email,
+            @RequestParam String password,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String phone,
+            @RequestParam (required = true) UserType userType) {
+
         try {
+            UserCreationRequest userCreationRequest = new UserCreationRequest();
+            userCreationRequest.setEmail(email);
+            userCreationRequest.setPassword(password);
+            userCreationRequest.setFirstName(firstName);
+            userCreationRequest.setLastName(lastName);
+            userCreationRequest.setPhone(phone);
+            userCreationRequest.setUserType(userType);
+
             SimpleUserDTO createdUser = this.userService.create(userCreationRequest);
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        } catch (UserEmailAlreadyExistsException e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(new ApiErrorResponse("Email already exists: " + email));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiErrorResponse("Invalid user data: " + e.getMessage()));
         }
     }
+
 /*
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) { ... }

@@ -17,7 +17,7 @@ public class JobDTO {
     private String salary;
     private String location;
     private String status;
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
     private LocalDate expiryDate;
     private SimpleCompanyDTO company;
     private String categoryName;
@@ -79,11 +79,11 @@ public class JobDTO {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 

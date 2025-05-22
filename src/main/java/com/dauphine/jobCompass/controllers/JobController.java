@@ -1,5 +1,6 @@
 package com.dauphine.jobCompass.controllers;
 import com.dauphine.jobCompass.dto.Job.JobDTO;
+import com.dauphine.jobCompass.dto.JobFilters.JobFilters;
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.dauphine.jobCompass.services.Job.JobService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +29,19 @@ public class JobController {
     @GetMapping("/Jobs")
     public ResponseEntity<List<JobDTO>> getAllSimpleJobs() {
         return ResponseEntity.ok(this.jobService.getAllJobs());
+    }
+
+    @GetMapping("/Jobs/filter")
+    public ResponseEntity<List<JobDTO>> filterJobs(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String contractType,
+            @RequestParam(required = false) String location) {
+
+        List<JobDTO> jobs = jobService.getFilteredJobs(
+                new JobFilters(search, category, contractType, location)
+        );
+        return ResponseEntity.ok(jobs);
     }
 
 }
