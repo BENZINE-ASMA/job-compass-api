@@ -1,24 +1,32 @@
 package com.dauphine.jobCompass.controllers;
-import org.springframework.web.bind.annotation.*;
-/*
+
+import com.dauphine.jobCompass.model.Company;
+import com.dauphine.jobCompass.model.JobCategory;
+import com.dauphine.jobCompass.services.Company.CompanyService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/v1/companies")
+@RequestMapping("/api/v1")
 public class CompanyController {
-/*
-    // GET /api/v1/companies
-    @GetMapping
-    public List<Company> getAllCompanies() { ... }
+    private final CompanyService companyService;
 
-    // GET /api/v1/companies/{id}
-    @GetMapping("/{id}")
-    public Company getCompanyById(@PathVariable Long id) { ... }
-
-    // POST /api/v1/companies
-    @PostMapping
-    public Company createCompany(@RequestBody CompanyCreationRequest request) { ... }
-
-    // PUT /api/v1/companies/{id} (Mise à jour complète)
-    @PutMapping("/{id}")
-    public Company updateCompany(@PathVariable Long id, @RequestBody CompanyUpdateRequest request) { ... }
-
-*/
+    public CompanyController(CompanyService companyService){
+        this.companyService = companyService;
+    }
+    @Operation(summary = "Get all companies")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved companies")
+    })
+    @GetMapping("/Jobs/Companies")
+    public ResponseEntity<List<Company>> getAllCompanies() {
+        return ResponseEntity.ok(this.companyService.getAllCompanies());
+    }
+}

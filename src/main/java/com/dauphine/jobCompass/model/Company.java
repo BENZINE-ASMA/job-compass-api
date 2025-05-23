@@ -27,11 +27,11 @@ public class Company {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "company")
-    private List<Job> jobs = new ArrayList<>();
-
-    @OneToMany(mappedBy = "company")
-    private List<User> employees = new ArrayList<>();
+//    @OneToMany(mappedBy = "company")
+//    private List<Job> jobs = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "company")
+//    private List<User> employees = new ArrayList<>();
 
     public UUID getId() {
         return id;
@@ -81,19 +81,19 @@ public class Company {
         this.createdAt = createdAt;
     }
 
-    public List<Job> getJobs() {
-        return jobs;
-    }
-
-    public void setJobs(List<Job> jobs) {
-        this.jobs = jobs;
-    }
-
-    public List<User> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(List<User> employees) {
-        this.employees = employees;
-    }
+//    public List<Job> getJobs() {
+//        return jobs;
+//    }
+//
+//    public void setJobs(List<Job> jobs) {
+//        this.jobs = jobs;
+//    }
+//
+//    public List<User> getEmployees() {
+//        return employees;
+//    }
+//
+//    public void setEmployees(List<User> employees) {
+//        this.employees = employees;
+//    }
 }

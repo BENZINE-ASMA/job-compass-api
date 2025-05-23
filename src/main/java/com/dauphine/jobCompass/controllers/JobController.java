@@ -44,6 +44,7 @@ public class JobController {
         return ResponseEntity.ok(jobs);
     }
 
+
 }
  /*   // GET /api/v1/jobs (Filtres optionnels)
     @GetMapping

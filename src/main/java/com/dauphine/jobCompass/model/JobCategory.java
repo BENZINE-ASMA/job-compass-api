@@ -14,11 +14,9 @@ public class JobCategory {
     @Column(name = "category_id", columnDefinition = "uuid")
     private UUID id;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
 
-    @OneToMany(mappedBy = "category")
-    private List<Job> jobs = new ArrayList<>();
 
     public UUID getId() {
         return id;
@@ -36,11 +34,4 @@ public class JobCategory {
         this.name = name;
     }
 
-    public List<Job> getJobs() {
-        return jobs;
-    }
-
-    public void setJobs(List<Job> jobs) {
-        this.jobs = jobs;
-    }
 }
