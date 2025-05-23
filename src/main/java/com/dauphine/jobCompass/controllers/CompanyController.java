@@ -29,4 +29,12 @@ public class CompanyController {
     public ResponseEntity<List<Company>> getAllCompanies() {
         return ResponseEntity.ok(this.companyService.getAllCompanies());
     }
+    @Operation(summary = "Get all companies name")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved companies name")
+    })
+    @GetMapping("/Jobs/Companies/Names")
+    public ResponseEntity<List<String>> getAllCompaniesNames() {
+        return ResponseEntity.ok(this.companyService.getAllCompaniesNames());
+    }
 }

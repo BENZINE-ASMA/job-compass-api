@@ -29,5 +29,13 @@ public class CategoryController {
     public ResponseEntity<List<JobCategory>> getAllCategories() {
         return ResponseEntity.ok(this.categoryService.getAllCategories());
     }
+    @Operation(summary = "Get all categories name")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved categories")
+    })
+    @GetMapping("/Jobs/Categories/Name")
+    public ResponseEntity<List<String>> getAllCategoriesName() {
+        return ResponseEntity.ok(this.categoryService.getAllCategoriesNames());
+    }
 
 }

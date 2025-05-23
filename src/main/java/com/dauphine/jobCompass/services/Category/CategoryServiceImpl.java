@@ -20,6 +20,12 @@ public class CategoryServiceImpl implements CategoryService {
         return categories;
     }
 
+    @Override
+    public List<String> getAllCategoriesNames(){
+        List<String> categoriesName = categoryRepository.findAllCategoryNames();
+        return categoriesName;
+    }
+
 
 
 }
