@@ -1,5 +1,6 @@
 package com.dauphine.jobCompass.services.Job;
 
+import com.dauphine.jobCompass.dto.Job.JobCreationRequest;
 import com.dauphine.jobCompass.dto.Job.JobDTO;
 import com.dauphine.jobCompass.dto.JobFilters.JobFilters;
 import com.dauphine.jobCompass.model.Job;
@@ -10,5 +11,5 @@ public interface JobService {
 
 List<JobDTO> getAllJobs ();
 List<JobDTO> getFilteredJobs(JobFilters filters);
-Job createJob (JobDTO job);
+JobDTO createJob(JobCreationRequest jobCreationRequest);
 }

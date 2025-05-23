@@ -28,8 +28,8 @@ public class CompanyServiceImpl implements CompanyService{
         return companiesName;
     }
 
-    public Company getCompanyById(String companyId) {
-        UUID uuid = UUID.fromString(companyId);
+    public Company getCompanyById(UUID companyId) {
+        UUID uuid = companyId;
         return companyRepository.findById(uuid)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Company not found with id: " + companyId));

@@ -20,10 +20,11 @@ public class JobDTO {
     private LocalDate createdAt;
     private LocalDate expiryDate;
 //    private SimpleCompanyDTO company;
-//    private String categoryName;
-    private User owner;
-    private String companyId;
-    private String categoryId;
+    private String categoryName;
+    private UUID ownerId;
+    private UUID companyId;
+    private UUID categoryId;
+
 
     //private Set<Skill> requiredSkills;
 
@@ -108,36 +109,38 @@ public class JobDTO {
 //        this.company = company;
 //    }
 //
-//    public String getCategoryName() {
-//        return categoryName;
-//    }
-//
-//    public void setCategoryName(String categoryName) {
-//        this.categoryName = categoryName;
-//    }
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     // Nouveaux getters et setters
-    public User getOwner() {
-        return owner;
+
+
+    public UUID getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setOwnerId(UUID ownerId) {
+        this.ownerId = ownerId;
     }
 
-    public String getCompanyId() {
+    public UUID getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(String companyId) {
+    public void setCompanyId(UUID companyId) {
         this.companyId = companyId;
     }
 
-    public String getCategoryId() {
+    public UUID getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(UUID categoryId) {
         this.categoryId = categoryId;
     }
 

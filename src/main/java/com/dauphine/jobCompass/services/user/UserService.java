@@ -8,6 +8,7 @@ import com.dauphine.jobCompass.model.User;
 import com.dauphine.jobCompass.model.enums.UserType;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
     SimpleUserDTO create(UserCreationRequest request);
@@ -15,7 +16,7 @@ public interface UserService {
     List<UserDTO> getAll();
     List<SimpleUserDTO> getAllSimpleUsers();
     SimpleUserDTO getSimpleUserByEmail(String email);
-    User getById(Long id);
+    User getById(UUID id);
     List<User> getByUserType(UserType userType);
 
     User update(Long id, UserUpdateRequest request);

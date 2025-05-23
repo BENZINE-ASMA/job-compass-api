@@ -35,7 +35,8 @@ public class Job {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
-    @Column(name = "job_type", length = 15)
+
+    @Column(name = "job_type")
     private String jobType;
 
     @Column(name = "salary", length = 100)

@@ -8,5 +8,5 @@ import java.util.UUID;
 public interface CompanyService {
     List<Company> getAllCompanies();
     List<String> getAllCompaniesNames();
-    Company getCompanyById(String companyId);
+    Company getCompanyById(UUID companyId);
 }

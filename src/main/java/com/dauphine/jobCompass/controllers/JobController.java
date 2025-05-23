@@ -1,4 +1,5 @@
 package com.dauphine.jobCompass.controllers;
+import com.dauphine.jobCompass.dto.Job.JobCreationRequest;
 import com.dauphine.jobCompass.dto.Job.JobDTO;
 import com.dauphine.jobCompass.dto.JobFilters.JobFilters;
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
@@ -49,8 +50,8 @@ public class JobController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved users")
     })
     @PostMapping("/Jobs")
-    public ResponseEntity<Job> createJob(@RequestBody JobDTO jobRequest) {
-        Job createdJob = jobService.createJob(jobRequest);
+    public ResponseEntity<JobDTO> createJob(@RequestBody JobCreationRequest jobRequest) {
+        JobDTO createdJob = jobService.createJob(jobRequest);
         return ResponseEntity.ok(createdJob);
     }
 
