@@ -2,6 +2,7 @@ package com.dauphine.jobCompass.dto.Job;
 
 import com.dauphine.jobCompass.dto.Company.SimpleCompanyDTO;
 import com.dauphine.jobCompass.model.Skill;
+import com.dauphine.jobCompass.model.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,7 +12,6 @@ import java.util.UUID;
 public class JobDTO {
     private UUID id;
     private String title;
-
     private String description;
     private String jobType;
     private String salary;
@@ -19,10 +19,15 @@ public class JobDTO {
     private String status;
     private LocalDate createdAt;
     private LocalDate expiryDate;
-    private SimpleCompanyDTO company;
-    private String categoryName;
+//    private SimpleCompanyDTO company;
+//    private String categoryName;
+    private User owner;
+    private String companyId;
+    private String categoryId;
+
     //private Set<Skill> requiredSkills;
 
+    // Getters et setters existants
     public UUID getId() {
         return id;
     }
@@ -95,30 +100,53 @@ public class JobDTO {
         this.expiryDate = expiryDate;
     }
 
-    public SimpleCompanyDTO getCompany() {
-        return company;
+//    public SimpleCompanyDTO getCompany() {
+//        return company;
+//    }
+//
+//    public void setCompany(SimpleCompanyDTO company) {
+//        this.company = company;
+//    }
+//
+//    public String getCategoryName() {
+//        return categoryName;
+//    }
+//
+//    public void setCategoryName(String categoryName) {
+//        this.categoryName = categoryName;
+//    }
+
+    // Nouveaux getters et setters
+    public User getOwner() {
+        return owner;
     }
 
-    public void setCompany(SimpleCompanyDTO company) {
-        this.company = company;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getCompanyId() {
+        return companyId;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
 /*
     public Set<String> getRequiredSkills() {
         return requiredSkills;
     }
-
     public void setRequiredSkills(Set<String> requiredSkills) {
         this.requiredSkills = requiredSkills;
     }
-
-
  */
 }

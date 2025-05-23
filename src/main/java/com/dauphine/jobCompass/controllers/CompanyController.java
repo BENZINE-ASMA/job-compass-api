@@ -25,7 +25,7 @@ public class CompanyController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully retrieved companies")
     })
-    @GetMapping("/Jobs/Companies")
+    @GetMapping("/Companies")
     public ResponseEntity<List<Company>> getAllCompanies() {
         return ResponseEntity.ok(this.companyService.getAllCompanies());
     }
@@ -33,7 +33,7 @@ public class CompanyController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully retrieved companies name")
     })
-    @GetMapping("/Jobs/Companies/Names")
+    @GetMapping("/Companies/Names")
     public ResponseEntity<List<String>> getAllCompaniesNames() {
         return ResponseEntity.ok(this.companyService.getAllCompaniesNames());
     }

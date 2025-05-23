@@ -25,7 +25,7 @@ public class CategoryController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully retrieved categories")
     })
-    @GetMapping("/Jobs/Categories")
+    @GetMapping("/Categories")
     public ResponseEntity<List<JobCategory>> getAllCategories() {
         return ResponseEntity.ok(this.categoryService.getAllCategories());
     }
@@ -33,9 +33,12 @@ public class CategoryController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully retrieved categories")
     })
-    @GetMapping("/Jobs/Categories/Name")
+    @GetMapping("/Categories/Name")
     public ResponseEntity<List<String>> getAllCategoriesName() {
         return ResponseEntity.ok(this.categoryService.getAllCategoriesNames());
     }
+
+
+
 
 }

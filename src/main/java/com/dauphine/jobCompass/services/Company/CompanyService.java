@@ -3,8 +3,10 @@ package com.dauphine.jobCompass.services.Company;
 import com.dauphine.jobCompass.model.Company;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface CompanyService {
-    public List<Company> getAllCompanies();
-    public List<String> getAllCompaniesNames();
+    List<Company> getAllCompanies();
+    List<String> getAllCompaniesNames();
+    Company getCompanyById(String companyId);
 }

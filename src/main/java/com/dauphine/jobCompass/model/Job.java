@@ -12,6 +12,7 @@ import java.util.*;
 @Table(name = "jobs")
 public class Job {
     @Id
+    @GeneratedValue(generator = "UUID")
     @Column(name = "job_id", columnDefinition = "uuid")
     private UUID id;
 
@@ -37,8 +38,10 @@ public class Job {
     @Column(name = "job_type", length = 15)
     private String jobType;
 
+    @Column(name = "salary", length = 100)
     private String salary;
 
+    @Column(name = "location", length = 100)
     private String location;
 
     @Column(length = 10)

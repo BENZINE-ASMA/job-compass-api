@@ -2,6 +2,7 @@ package com.dauphine.jobCompass.controllers;
 import com.dauphine.jobCompass.dto.Job.JobDTO;
 import com.dauphine.jobCompass.dto.JobFilters.JobFilters;
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
+import com.dauphine.jobCompass.model.Job;
 import com.dauphine.jobCompass.services.Job.JobService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -42,6 +43,15 @@ public class JobController {
                 new JobFilters(search, category, contractType, location)
         );
         return ResponseEntity.ok(jobs);
+    }
+    @Operation(summary = "Create new job")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved users")
+    })
+    @PostMapping("/Jobs")
+    public ResponseEntity<Job> createJob(@RequestBody JobDTO jobRequest) {
+        Job createdJob = jobService.createJob(jobRequest);
+        return ResponseEntity.ok(createdJob);
     }
 
 
