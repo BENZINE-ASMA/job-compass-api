@@ -1,5 +1,6 @@
 package com.dauphine.jobCompass.dto.User;
 
+import com.dauphine.jobCompass.dto.Company.CompanyDTO;
 import com.dauphine.jobCompass.model.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -13,15 +14,16 @@ public class SimpleUserDTO {
     private String lastName;
     private String phone;
     private UserType userType;
+    private CompanyDTO company;
+
+
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
 
-    // Constructeur sans argument requis par certains frameworks (Jackson, JPA...)
     public SimpleUserDTO() {}
 
-    // Constructeur avec paramètres, ne génère pas un nouvel id ni date par défaut — laisse ça à la couche service
-    public SimpleUserDTO(UUID id, String email, String firstName, String lastName, String phone, UserType userType, LocalDateTime createdAt) {
+    public SimpleUserDTO(UUID id, String email, String firstName, String lastName, String phone, UserType userType,CompanyDTO company,  LocalDateTime createdAt) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -29,6 +31,7 @@ public class SimpleUserDTO {
         this.phone = phone;
         this.userType = userType;
         this.createdAt = createdAt;
+        this.company = company;
     }
 
     // Getters & Setters
@@ -87,5 +90,12 @@ public class SimpleUserDTO {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+    public CompanyDTO getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyDTO company) {
+        this.company = company;
     }
 }

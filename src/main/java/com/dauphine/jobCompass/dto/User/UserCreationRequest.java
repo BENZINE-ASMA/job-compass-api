@@ -2,10 +2,7 @@ package com.dauphine.jobCompass.dto.User;
 
 
 import com.dauphine.jobCompass.model.enums.UserType;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 
 public class UserCreationRequest {
@@ -28,6 +25,17 @@ public class UserCreationRequest {
 
     @NotNull
     private UserType userType;
+
+    @Null
+    private String companyId;
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
 
     public String getEmail() {
         return email;

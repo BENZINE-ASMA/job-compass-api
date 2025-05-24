@@ -10,11 +10,13 @@ import com.dauphine.jobCompass.exceptions.UsernameNotFoundException;
 import com.dauphine.jobCompass.mapper.ApplicationMapper;
 import com.dauphine.jobCompass.mapper.UserMapper;
 import com.dauphine.jobCompass.model.Application;
+import com.dauphine.jobCompass.model.Company;
 import com.dauphine.jobCompass.model.User;
 import com.dauphine.jobCompass.model.enums.UserType;
 import com.dauphine.jobCompass.repositories.ApplicationRepository;
 import com.dauphine.jobCompass.repositories.JobRepository;
 import com.dauphine.jobCompass.repositories.UserRepository;
+import com.dauphine.jobCompass.services.Company.CompanyService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,24 +30,26 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final CompanyService companyService;
     private final UserMapper userMapper;
     private PasswordEncoder passwordEncoder;
     private final ApplicationRepository applicationRepository;
     private final ApplicationMapper applicationMapper;
 
     public UserServiceImpl(UserRepository userRepository,UserMapper userMapper,
-                           ApplicationRepository applicationRepository,ApplicationMapper applicationMapper){
+                           ApplicationRepository applicationRepository,ApplicationMapper applicationMapper, CompanyService companyService){
         this.userRepository=userRepository;
         this.userMapper=userMapper;
         this.passwordEncoder=new BCryptPasswordEncoder();
         this.applicationRepository =applicationRepository;
         this.applicationMapper=applicationMapper;
+        this.companyService=companyService;
     }
-    @Override
     public SimpleUserDTO create(UserCreationRequest request) {
-        if(userRepository.existsByEmail(request.getEmail())){
+        if(userRepository.existsByEmail(request.getEmail())) {
             throw new UserEmailAlreadyExistsException(request.getEmail());
         }
+
         User user = new User();
         user.setId(UUID.randomUUID());
         user.setEmail(request.getEmail());
@@ -54,12 +58,18 @@ public class UserServiceImpl implements UserService {
         user.setPhone(request.getPhone());
         user.setUserType(request.getUserType());
         user.setCreatedAt(LocalDateTime.now());
+
+        if (request.getCompanyId() != null) {
+            Company company = companyService.getCompanyById(UUID.fromString(request.getCompanyId()));
+            user.setCompany(company);
+        }
+
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
 
-        User savedUser = userRepository.save(user); userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
         return userMapper.toSimpleDto(savedUser);
     }
-
     @Override
     public List<UserDTO> getAll() {
         List<User> users = userRepository.findAll();

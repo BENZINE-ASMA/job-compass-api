@@ -90,7 +90,9 @@ public class UserController {
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
             @RequestParam(required = false) String phone,
-            @RequestParam (required = true) UserType userType) {
+            @RequestParam (required = true) UserType userType,
+            @RequestParam (required = false) String company
+    ) {
 
         try {
             UserCreationRequest userCreationRequest = new UserCreationRequest();
@@ -100,6 +102,7 @@ public class UserController {
             userCreationRequest.setLastName(lastName);
             userCreationRequest.setPhone(phone);
             userCreationRequest.setUserType(userType);
+            userCreationRequest.setCompanyId(company);
 
             SimpleUserDTO createdUser = this.userService.create(userCreationRequest);
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
