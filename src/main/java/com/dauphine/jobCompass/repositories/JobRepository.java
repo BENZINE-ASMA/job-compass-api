@@ -24,5 +24,9 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
     List<String> findDistinctLocations();
 
 
+    @Query("SELECT j FROM Job j WHERE j.owner.id = :ownerId")
+    List<Job> findByOwnerId(@Param("ownerId") UUID ownerId);
+
+
 
 }

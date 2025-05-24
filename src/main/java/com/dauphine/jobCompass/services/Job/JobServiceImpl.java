@@ -40,6 +40,12 @@ public class JobServiceImpl implements JobService {
         return jobs.stream().map(jobMapper::toDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<JobDTO> getAllOwnersJobs(UUID id){
+        List<Job> jobs = this.jobRepository.findByOwnerId(id);
+        return jobs.stream().map(jobMapper::toDto).collect(Collectors.toList());
+    }
+
     public List<JobDTO> getFilteredJobs(JobFilters filters) {
         List<Job> jobs = this.jobRepository.findFilteredJobs(filters.getSearch(),filters.getCategory(),filters.getContractType(),filters.getLocation());
         return jobs.stream().map(jobMapper::toDto).collect(Collectors.toList());

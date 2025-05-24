@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +27,22 @@ public class JobController {
     public JobController(JobService jobService,ApplicationService applicationService) {
         this.jobService = jobService;
         this.applicationService = applicationService;
+    }
+
+    @Operation(summary = "Get all jobs by owner ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved jobs"),
+            @ApiResponse(responseCode = "400", description = "Invalid UUID format")
+    })
+    @GetMapping("/Jobs/owner/{ownerId}")
+    public ResponseEntity<List<JobDTO>> getJobsByOwnerId(@PathVariable String ownerId) {
+        try {
+            UUID uuid = UUID.fromString(ownerId);
+            List<JobDTO> jobs = jobService.getAllOwnersJobs(uuid);
+            return ResponseEntity.ok(jobs);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Collections.emptyList()); // ou un message d'erreur
+        }
     }
 
     @Operation(summary = "Get all users with basic information",
