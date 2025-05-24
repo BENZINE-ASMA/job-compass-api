@@ -4,6 +4,7 @@ import com.dauphine.jobCompass.dto.Job.JobDTO;
 import com.dauphine.jobCompass.dto.JobFilters.JobFilters;
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.dauphine.jobCompass.model.Job;
+import com.dauphine.jobCompass.services.Application.ApplicationService;
 import com.dauphine.jobCompass.services.Job.JobService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,9 +21,11 @@ import java.util.UUID;
 
 public class JobController {
     private final JobService jobService;
+    private final ApplicationService applicationService;
 
-    public JobController(JobService jobService) {
+    public JobController(JobService jobService,ApplicationService applicationService) {
         this.jobService = jobService;
+        this.applicationService = applicationService;
     }
 
     @Operation(summary = "Get all users with basic information",
@@ -64,6 +67,11 @@ public class JobController {
 
         JobDTO job = jobService.getJobById(id);
         return ResponseEntity.ok(job);
+    }
+    @GetMapping("/{jobId}/applicants")
+    public ResponseEntity<List<SimpleUserDTO>> getApplicantsByJobId(@PathVariable UUID jobId) {
+        List<SimpleUserDTO> applicants = applicationService.getApplicantsByJobId(jobId);
+        return ResponseEntity.ok(applicants);
     }
 
 

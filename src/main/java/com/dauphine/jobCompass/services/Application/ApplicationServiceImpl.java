@@ -3,10 +3,12 @@ package com.dauphine.jobCompass.services.Application;
 
 import com.dauphine.jobCompass.dto.Application.ApplicationDTO;
 import com.dauphine.jobCompass.dto.Application.ApplicationRequestDTO;
+import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.dauphine.jobCompass.exceptions.AlreadyAppliedException;
 import com.dauphine.jobCompass.exceptions.JobNotFoundException;
 import com.dauphine.jobCompass.exceptions.UserNotFoundException;
 import com.dauphine.jobCompass.mapper.ApplicationMapper;
+import com.dauphine.jobCompass.mapper.UserMapper;
 import com.dauphine.jobCompass.model.Application;
 import com.dauphine.jobCompass.model.Job;
 import com.dauphine.jobCompass.model.User;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -26,16 +29,19 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final JobRepository jobRepository;
     private final UserRepository userRepository;
     private final ApplicationMapper applicationMapper;
+    private final UserMapper userMapper;
 
     public ApplicationServiceImpl(
             ApplicationRepository applicationRepository,
             JobRepository jobRepository,
             UserRepository userRepository,
-            ApplicationMapper applicationMapper) {
+            ApplicationMapper applicationMapper,
+            UserMapper  userMapper) {
         this.applicationRepository = applicationRepository;
         this.jobRepository = jobRepository;
         this.userRepository = userRepository;
         this.applicationMapper = applicationMapper;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -69,4 +75,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         List<Application> applications = applicationRepository.findByUserId(userId);
         return applicationMapper.toDtoList(applications);
     }
+    @Override
+    public List<SimpleUserDTO> getApplicantsByJobId(UUID jobId) {
+        List<Application> applications = applicationRepository.findByJobId(jobId);
+        return applications.stream()
+                .map(app -> userMapper.toSimpleDto(app.getUser()))
+                .collect(Collectors.toList());
+    }
+
 }
