@@ -10,8 +10,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface JobMapper {
 
-    @Mapping(target = "ownerId", source = "owner.id")
-    @Mapping(target = "companyId", source = "company.id")
-    @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(source = "owner.id", target = "ownerId")
+    @Mapping(source = "company", target = "company")
+    @Mapping(source = "category", target = "category")
     JobDTO toDto(Job job);
 }

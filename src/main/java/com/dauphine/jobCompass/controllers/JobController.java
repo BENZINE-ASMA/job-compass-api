@@ -68,11 +68,7 @@ public class JobController {
         JobDTO job = jobService.getJobById(id);
         return ResponseEntity.ok(job);
     }
-    @GetMapping("/{jobId}/applicants")
-    public ResponseEntity<List<SimpleUserDTO>> getApplicantsByJobId(@PathVariable UUID jobId) {
-        List<SimpleUserDTO> applicants = applicationService.getApplicantsByJobId(jobId);
-        return ResponseEntity.ok(applicants);
-    }
+
     @GetMapping("Jobs/locations")
     public List<String> getAllLocations() {
         return jobService.getAllLocations();

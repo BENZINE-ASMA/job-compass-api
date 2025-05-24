@@ -1,11 +1,13 @@
 package com.dauphine.jobCompass.dto.Application;
 
+import com.dauphine.jobCompass.dto.Job.JobDTO;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ApplicationDTO {
     private UUID id;
-    private UUID jobId;
+    private JobDTO job;
     private UUID userId;
     private String coverLetter;
     private String resumeUrl;
@@ -16,10 +18,10 @@ public class ApplicationDTO {
 
     }
 
-    public ApplicationDTO(UUID id, UUID jobId, UUID userId, String coverLetter,
+    public ApplicationDTO(UUID id, JobDTO job, UUID userId, String coverLetter,
                           String resumeUrl, String status, LocalDateTime createdAt) {
         this.id = id;
-        this.jobId = jobId;
+        this.job = job;
         this.userId = userId;
         this.coverLetter = coverLetter;
         this.resumeUrl = resumeUrl;
@@ -36,12 +38,12 @@ public class ApplicationDTO {
         this.id = id;
     }
 
-    public UUID getJobId() {
-        return jobId;
+    public JobDTO getJob() {
+        return job;
     }
 
-    public void setJobId(UUID jobId) {
-        this.jobId = jobId;
+    public void setJob(JobDTO job) {
+        this.job = job;
     }
 
     public UUID getUserId() {

@@ -7,10 +7,10 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {JobMapper.class})
 public interface ApplicationMapper {
 
-    @Mapping(source = "job.id", target = "jobId")
+    @Mapping(source = "job", target = "job")
     @Mapping(source = "user.id", target = "userId")
     ApplicationDTO toDto(Application application);
 

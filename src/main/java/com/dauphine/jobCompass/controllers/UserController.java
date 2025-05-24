@@ -116,11 +116,7 @@ public class UserController {
                     .body(new ApiErrorResponse("Invalid user data: " + e.getMessage()));
         }
     }
-    @GetMapping("/{userId}/applications")
-    public ResponseEntity<List<ApplicationDTO>> getApplicationsForUser(@PathVariable UUID userId) {
-        List<ApplicationDTO> applications = applicationService.getApplicationsByUserId(userId);
-        return ResponseEntity.ok(applications);
-    }
+
     @PutMapping("/users/{id}")
     public ResponseEntity<SimpleUserDTO> updateUser(
             @PathVariable UUID id,

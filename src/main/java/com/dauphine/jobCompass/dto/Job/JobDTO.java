@@ -1,6 +1,9 @@
 package com.dauphine.jobCompass.dto.Job;
 
+import com.dauphine.jobCompass.dto.Category.CategoryDTO;
+import com.dauphine.jobCompass.dto.Company.CompanyDTO;
 import com.dauphine.jobCompass.dto.Company.SimpleCompanyDTO;
+import com.dauphine.jobCompass.model.JobCategory;
 import com.dauphine.jobCompass.model.Skill;
 import com.dauphine.jobCompass.model.User;
 
@@ -19,16 +22,13 @@ public class JobDTO {
     private String status;
     private LocalDate createdAt;
     private LocalDate expiryDate;
-//    private SimpleCompanyDTO company;
-    private String categoryName;
+    //    private SimpleCompanyDTO company;
+//    private String categoryName;
     private UUID ownerId;
-    private UUID companyId;
-    private UUID categoryId;
+    private CompanyDTO company;
+    private CategoryDTO category;
+    private Skill skill;
 
-
-    //private Set<Skill> requiredSkills;
-
-    // Getters et setters existants
     public UUID getId() {
         return id;
     }
@@ -53,12 +53,12 @@ public class JobDTO {
         this.description = description;
     }
 
-    public String getLocation() {
-        return location;
+    public String getJobType() {
+        return jobType;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setJobType(String jobType) {
+        this.jobType = jobType;
     }
 
     public String getSalary() {
@@ -69,12 +69,12 @@ public class JobDTO {
         this.salary = salary;
     }
 
-    public String getJobType() {
-        return jobType;
+    public String getLocation() {
+        return location;
     }
 
-    public void setJobType(String jobType) {
-        this.jobType = jobType;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getStatus() {
@@ -101,25 +101,6 @@ public class JobDTO {
         this.expiryDate = expiryDate;
     }
 
-//    public SimpleCompanyDTO getCompany() {
-//        return company;
-//    }
-//
-//    public void setCompany(SimpleCompanyDTO company) {
-//        this.company = company;
-//    }
-//
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    // Nouveaux getters et setters
-
-
     public UUID getOwnerId() {
         return ownerId;
     }
@@ -128,28 +109,27 @@ public class JobDTO {
         this.ownerId = ownerId;
     }
 
-    public UUID getCompanyId() {
-        return companyId;
+    public CompanyDTO getCompany() {
+        return company;
     }
 
-    public void setCompanyId(UUID companyId) {
-        this.companyId = companyId;
+    public void setCompany(CompanyDTO company) {
+        this.company = company;
     }
 
-    public UUID getCategoryId() {
-        return categoryId;
+    public CategoryDTO getCategory() {
+        return category;
     }
 
-    public void setCategoryId(UUID categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(CategoryDTO category) {
+        this.category = category;
     }
 
-/*
-    public Set<String> getRequiredSkills() {
-        return requiredSkills;
+    public Skill getSkill() {
+        return skill;
     }
-    public void setRequiredSkills(Set<String> requiredSkills) {
-        this.requiredSkills = requiredSkills;
+
+    public void setSkill(Skill skill) {
+        this.skill = skill;
     }
- */
 }
