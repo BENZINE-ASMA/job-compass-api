@@ -4,9 +4,12 @@ import com.dauphine.jobCompass.dto.Application.ApplicationDTO;
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.dauphine.jobCompass.dto.User.UserCreationRequest;
 import com.dauphine.jobCompass.dto.User.UserDTO;
+import com.dauphine.jobCompass.dto.User.UserUpdateRequest;
 import com.dauphine.jobCompass.exceptions.ApiErrorResponse;
 import com.dauphine.jobCompass.exceptions.UserEmailAlreadyExistsException;
 import com.dauphine.jobCompass.exceptions.UsernameNotFoundException;
+import com.dauphine.jobCompass.mapper.UserMapper;
+import com.dauphine.jobCompass.model.User;
 import com.dauphine.jobCompass.model.enums.UserType;
 import com.dauphine.jobCompass.services.Application.ApplicationService;
 import com.dauphine.jobCompass.services.user.UserService;
@@ -34,11 +37,13 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
     private final ApplicationService applicationService;
+    private final UserMapper userMapper;
 
 
-    public UserController(UserService userService, ApplicationService applicationService) {
+    public UserController(UserService userService, ApplicationService applicationService,UserMapper userMapper) {
         this.userService = userService;
         this.applicationService = applicationService;
+        this.userMapper = userMapper;
     }
 
     @Operation(summary = "Get all users with basic information",
@@ -113,6 +118,22 @@ public class UserController {
         List<ApplicationDTO> applications = applicationService.getApplicationsByUserId(userId);
         return ResponseEntity.ok(applications);
     }
+    @PutMapping("/users/{id}")
+    public ResponseEntity<SimpleUserDTO> updateUser(
+            @PathVariable UUID id,
+            @RequestBody UserUpdateRequest request) {
+        User updatedUser = userService.updateUser(id, request);
+        return ResponseEntity.ok(userMapper.toSimpleDto(updatedUser));
+    }
+
+    @PatchMapping("/users/{id}")
+    public ResponseEntity<SimpleUserDTO> patchUser(
+            @PathVariable UUID id,
+            @RequestBody UserUpdateRequest request) {
+        User patchedUser = userService.patchUser(id, request);
+        return ResponseEntity.ok(userMapper.toSimpleDto(patchedUser));
+    }
+
 
 /*
     @GetMapping("/{id}")

@@ -94,30 +94,30 @@ public class UserServiceImpl implements UserService {
         List<Application> applications = applicationRepository.findByUserId(userId);
         return applicationMapper.toDtoList(applications);
     }
-
-
     @Override
-    public List<User> getByUserType(UserType userType) {
-        return List.of();
+    public User updateUser(UUID id, UserUpdateRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setPhone(request.getPhone());
+        user.setUserType(request.getUserType());
+
+        return userRepository.save(user);
     }
 
     @Override
-    public User update(Long id, UserUpdateRequest request) {
-        return null;
+    public User patchUser(UUID id, UserUpdateRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (request.getFirstName() != null) user.setFirstName(request.getFirstName());
+        if (request.getLastName() != null) user.setLastName(request.getLastName());
+        if (request.getPhone() != null) user.setPhone(request.getPhone());
+        if (request.getUserType() != null) user.setUserType(request.getUserType());
+
+        return userRepository.save(user);
     }
 
-    @Override
-    public User updatePassword(Long id, String newPassword) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(Long id) {
-
-    }
-
-    @Override
-    public boolean existsByEmail(String email) {
-        return false;
-    }
 }

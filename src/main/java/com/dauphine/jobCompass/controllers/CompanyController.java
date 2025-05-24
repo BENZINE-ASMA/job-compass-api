@@ -1,5 +1,6 @@
 package com.dauphine.jobCompass.controllers;
 
+import com.dauphine.jobCompass.dto.Company.CompanyCreationRequest;
 import com.dauphine.jobCompass.model.Company;
 import com.dauphine.jobCompass.model.JobCategory;
 import com.dauphine.jobCompass.services.Company.CompanyService;
@@ -7,10 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -36,5 +36,11 @@ public class CompanyController {
     @GetMapping("/Companies/Names")
     public ResponseEntity<List<String>> getAllCompaniesNames() {
         return ResponseEntity.ok(this.companyService.getAllCompaniesNames());
+    }
+    @PostMapping
+    public ResponseEntity<Company> createCompany(@RequestBody CompanyCreationRequest request) {
+        Company company = companyService.createCompany(request);
+        return ResponseEntity.created(URI.create("/api/companies/" + company.getId()))
+                .body(company);
     }
 }

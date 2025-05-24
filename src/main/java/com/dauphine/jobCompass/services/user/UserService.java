@@ -18,18 +18,9 @@ public interface UserService {
     List<SimpleUserDTO> getAllSimpleUsers();
     SimpleUserDTO getSimpleUserByEmail(String email);
     User getById(UUID id);
+    User updateUser(UUID id, UserUpdateRequest request);       // PUT
+    User patchUser(UUID id, UserUpdateRequest request);
     List<ApplicationDTO> getApplicationsByUserId(UUID userId);
-    List<User> getByUserType(UserType userType);
 
-    User update(Long id, UserUpdateRequest request);
-    User updatePassword(Long id, String newPassword);
-
-    void deleteById(Long id);
-
-    boolean existsByEmail(String email);
-
-    /*
-    void validateUserTypeTransition(User currentUser, UserType newType);
-     */
 
 }
