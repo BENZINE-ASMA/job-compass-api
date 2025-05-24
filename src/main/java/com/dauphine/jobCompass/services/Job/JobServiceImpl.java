@@ -3,6 +3,7 @@ package com.dauphine.jobCompass.services.Job;
 import com.dauphine.jobCompass.dto.Job.JobCreationRequest;
 import com.dauphine.jobCompass.dto.Job.JobDTO;
 import com.dauphine.jobCompass.dto.JobFilters.JobFilters;
+import com.dauphine.jobCompass.exceptions.ResourceNotFoundException;
 import com.dauphine.jobCompass.mapper.JobMapper;
 import com.dauphine.jobCompass.model.Job;
 import com.dauphine.jobCompass.model.User;
@@ -65,6 +66,12 @@ public class JobServiceImpl implements JobService {
         Job savedJob = jobRepository.save(job);
 
         return jobMapper.toDto(savedJob);
+    }
+    @Override
+    public JobDTO getJobById(UUID id) {
+        return jobRepository.findById(id)
+                .map(jobMapper::toDto)
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + id));
     }
 
 

@@ -6,12 +6,14 @@ import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.dauphine.jobCompass.model.Job;
 import com.dauphine.jobCompass.services.Job.JobService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -53,6 +55,15 @@ public class JobController {
     public ResponseEntity<JobDTO> createJob(@RequestBody JobCreationRequest jobRequest) {
         JobDTO createdJob = jobService.createJob(jobRequest);
         return ResponseEntity.ok(createdJob);
+    }
+
+    @GetMapping("Jobs/{id}")
+    public ResponseEntity<JobDTO> getJobById(
+            @Parameter(description = "UUID of the job to be retrieved", required = true, example = "123e4567-e89b-12d3-a456-426614174000")
+            @PathVariable UUID id) {
+
+        JobDTO job = jobService.getJobById(id);
+        return ResponseEntity.ok(job);
     }
 
 
