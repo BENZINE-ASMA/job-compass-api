@@ -20,7 +20,6 @@ public class JobCategoryController {
         this.jobCategoryService = jobCategoryService;
     }
 
-    // 🔹 GET /api/v1/categories
     @GetMapping
     public ResponseEntity<List<JobCategory>> getAllCategories() {
         List<JobCategory> categories = jobCategoryService.getAllCategories();
@@ -33,8 +32,6 @@ public class JobCategoryController {
         return ResponseEntity.ok(category);
     }
 
-
-    // 🔹 POST /api/v1/categories
     @PostMapping
     public ResponseEntity<JobCategory> createCategory(@RequestBody JobCategory category) {
         JobCategory created = jobCategoryService.createCategory(category);

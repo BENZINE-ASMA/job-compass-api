@@ -6,14 +6,10 @@ import com.dauphine.jobCompass.dto.JobFilters.JobFilters;
 import com.dauphine.jobCompass.exceptions.ResourceNotFoundException;
 import com.dauphine.jobCompass.mapper.JobMapper;
 import com.dauphine.jobCompass.model.Job;
-import com.dauphine.jobCompass.model.User;
 import com.dauphine.jobCompass.repositories.JobRepository;
-import com.dauphine.jobCompass.repositories.UserRepository;
 import com.dauphine.jobCompass.services.Company.CompanyService;
 import com.dauphine.jobCompass.services.JobCategory.JobCategoryService;
 import com.dauphine.jobCompass.services.user.UserService;
-import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.Cache;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

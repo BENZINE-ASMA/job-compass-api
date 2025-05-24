@@ -5,10 +5,14 @@ import com.dauphine.jobCompass.model.Application;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {CompanyMapper.class, UserMapper.class})
+import java.util.List;
+
+@Mapper(componentModel = "spring")
 public interface ApplicationMapper {
+
     @Mapping(source = "job.id", target = "jobId")
     @Mapping(source = "user.id", target = "userId")
     ApplicationDTO toDto(Application application);
 
+    List<ApplicationDTO> toDtoList(List<Application> applications);
 }

@@ -1,25 +1,26 @@
 package com.dauphine.jobCompass.controllers;
+
+
+import com.dauphine.jobCompass.dto.Application.ApplicationDTO;
+import com.dauphine.jobCompass.dto.Application.ApplicationRequestDTO;
+import com.dauphine.jobCompass.model.Application;
+import com.dauphine.jobCompass.services.Application.ApplicationService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-/*
+
 @RestController
-@RequestMapping("/api/v1/applications")
+@RequestMapping("/api/applications")
 public class ApplicationController {
-/*
-    // POST /api/v1/applications
+
+    private final ApplicationService applicationService;
+
+    public ApplicationController(ApplicationService applicationService) {
+        this.applicationService = applicationService;
+    }
+
     @PostMapping
-    public Application submitApplication(
-            @RequestParam Long jobId,
-            @RequestParam Long userId,
-            @RequestBody ApplicationRequest request) { ... }
-
-    // GET /api/v1/applications/jobs/{jobId}
-    @GetMapping("/jobs/{jobId}")
-    public List<Application> getApplicationsByJob(@PathVariable Long jobId) { ... }
-
-    // PATCH /api/v1/applications/{id}/status (Mise à jour du statut)
-    @PatchMapping("/{id}/status")
-    public Application updateStatus(
-            @PathVariable Long id,
-            @RequestParam String status) { ... }
-}*/
-
+    public ResponseEntity<ApplicationDTO> applyToJob(@RequestBody ApplicationRequestDTO dto) {
+        ApplicationDTO saved = applicationService.applyToJob(dto);
+        return ResponseEntity.ok(saved);
+    }
+}

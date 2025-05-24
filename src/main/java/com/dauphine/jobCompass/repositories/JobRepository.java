@@ -11,14 +11,15 @@ import java.util.UUID;
 
 public interface JobRepository extends JpaRepository<Job, UUID> {
     @Query("SELECT j FROM Job j WHERE " +
-            "(:search IS NULL OR j.title LIKE %:search% OR j.description LIKE %:search%) AND " +
-            "(:category IS NULL OR j.category.name = :category) AND " +
-            "(:contractType IS NULL OR j.jobType = :contractType) AND " +
-            "(:location IS NULL OR j.location LIKE %:location%)")
+            "(:search IS NULL OR j.title ILIKE %:search% OR j.description ILIKE %:search%) AND " +
+            "(:category IS NULL OR j.category.name ILIKE :category) AND " +
+            "(:contractType IS NULL OR j.jobType ILIKE :contractType) AND " +
+            "(:location IS NULL OR j.location ILIKE %:location%)")
     List<Job> findFilteredJobs(
             @Param("search") String search,
             @Param("category") String category,
             @Param("contractType") String contractType,
             @Param("location") String location);
+
 
 }

@@ -1,5 +1,6 @@
 package com.dauphine.jobCompass.controllers;
 
+import com.dauphine.jobCompass.dto.Application.ApplicationDTO;
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.dauphine.jobCompass.dto.User.UserCreationRequest;
 import com.dauphine.jobCompass.dto.User.UserDTO;
@@ -7,6 +8,7 @@ import com.dauphine.jobCompass.exceptions.ApiErrorResponse;
 import com.dauphine.jobCompass.exceptions.UserEmailAlreadyExistsException;
 import com.dauphine.jobCompass.exceptions.UsernameNotFoundException;
 import com.dauphine.jobCompass.model.enums.UserType;
+import com.dauphine.jobCompass.services.Application.ApplicationService;
 import com.dauphine.jobCompass.services.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
+
 @Tag(
         name = "User API",
         description = "Endpoints for managing users"
@@ -29,9 +33,12 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class UserController {
     private final UserService userService;
+    private final ApplicationService applicationService;
 
-    public UserController(UserService userService) {
+
+    public UserController(UserService userService, ApplicationService applicationService) {
         this.userService = userService;
+        this.applicationService = applicationService;
     }
 
     @Operation(summary = "Get all users with basic information",
@@ -100,6 +107,11 @@ public class UserController {
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new ApiErrorResponse("Invalid user data: " + e.getMessage()));
         }
+    }
+    @GetMapping("/{userId}/applications")
+    public ResponseEntity<List<ApplicationDTO>> getApplicationsForUser(@PathVariable UUID userId) {
+        List<ApplicationDTO> applications = applicationService.getApplicationsByUserId(userId);
+        return ResponseEntity.ok(applications);
     }
 
 /*

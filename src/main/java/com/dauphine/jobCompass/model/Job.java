@@ -32,7 +32,7 @@ public class Job {
     @Column(nullable = false, length = 100)
     private String title;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column()
     private String description;
 
 
