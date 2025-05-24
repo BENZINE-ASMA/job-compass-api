@@ -73,6 +73,10 @@ public class JobController {
         List<SimpleUserDTO> applicants = applicationService.getApplicantsByJobId(jobId);
         return ResponseEntity.ok(applicants);
     }
+    @GetMapping("Jobs/locations")
+    public List<String> getAllLocations() {
+        return jobService.getAllLocations();
+    }
 
 
 }

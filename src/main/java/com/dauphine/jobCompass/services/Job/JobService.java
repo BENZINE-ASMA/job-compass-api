@@ -14,4 +14,5 @@ List<JobDTO> getAllJobs ();
 List<JobDTO> getFilteredJobs(JobFilters filters);
 JobDTO createJob(JobCreationRequest jobCreationRequest);
 JobDTO getJobById (UUID id);
+List<String> getAllLocations();
 }

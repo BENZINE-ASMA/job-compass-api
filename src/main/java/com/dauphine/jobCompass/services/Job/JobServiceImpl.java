@@ -69,6 +69,16 @@ public class JobServiceImpl implements JobService {
                 .map(jobMapper::toDto)
                 .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + id));
     }
+    @Override
+    public List<String> getAllLocations() {
+        return jobRepository.findAll().stream()
+                .map(Job::getLocation)
+                .filter(loc -> loc != null && !loc.isBlank())
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+
 
 
 

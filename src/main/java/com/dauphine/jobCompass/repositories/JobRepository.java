@@ -20,6 +20,9 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
             @Param("category") String category,
             @Param("contractType") String contractType,
             @Param("location") String location);
+    @Query("SELECT DISTINCT j.location FROM Job j WHERE j.location IS NOT NULL AND j.location <> ''")
+    List<String> findDistinctLocations();
+
 
 
 }
