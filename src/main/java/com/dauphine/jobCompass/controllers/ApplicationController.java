@@ -34,9 +34,9 @@ public class ApplicationController {
         return ResponseEntity.ok(applications);
     }
 
-    @GetMapping("/jobs/{jobId}/applicants")
-    public ResponseEntity<List<SimpleUserDTO>> getApplicantsByJobId(@PathVariable UUID jobId) {
-        List<SimpleUserDTO> applicants = applicationService.getApplicantsByJobId(jobId);
+    @GetMapping("/jobs/{jobId}/applications")
+    public ResponseEntity<List<ApplicationDTO>> getApplicantsByJobId(@PathVariable UUID jobId) {
+        List<ApplicationDTO> applicants = applicationService.getApplicantsByJobId(jobId);
         return ResponseEntity.ok(applicants);
     }
 }

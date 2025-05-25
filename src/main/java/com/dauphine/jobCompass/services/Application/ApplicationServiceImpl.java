@@ -76,11 +76,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         return applicationMapper.toDtoList(applications);
     }
     @Override
-    public List<SimpleUserDTO> getApplicantsByJobId(UUID jobId) {
+    public List<ApplicationDTO> getApplicantsByJobId(UUID jobId) {
         List<Application> applications = applicationRepository.findByJobId(jobId);
-        return applications.stream()
-                .map(app -> userMapper.toSimpleDto(app.getUser()))
-                .collect(Collectors.toList());
+        return applicationMapper.toDtoList(applications);
     }
+
 
 }

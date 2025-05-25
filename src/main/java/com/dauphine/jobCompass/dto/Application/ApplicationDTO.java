@@ -1,6 +1,7 @@
 package com.dauphine.jobCompass.dto.Application;
 
 import com.dauphine.jobCompass.dto.Job.JobDTO;
+import com.dauphine.jobCompass.dto.User.UserDTO;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -8,7 +9,7 @@ import java.util.UUID;
 public class ApplicationDTO {
     private UUID id;
     private JobDTO job;
-    private UUID userId;
+    private UserDTO user;
     private String coverLetter;
     private String resumeUrl;
     private String status;
@@ -18,11 +19,11 @@ public class ApplicationDTO {
 
     }
 
-    public ApplicationDTO(UUID id, JobDTO job, UUID userId, String coverLetter,
+    public ApplicationDTO(UUID id, JobDTO job, UserDTO user, String coverLetter,
                           String resumeUrl, String status, LocalDateTime createdAt) {
         this.id = id;
         this.job = job;
-        this.userId = userId;
+        this.user = user;
         this.coverLetter = coverLetter;
         this.resumeUrl = resumeUrl;
         this.status = status;
@@ -46,12 +47,12 @@ public class ApplicationDTO {
         this.job = job;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     public String getCoverLetter() {

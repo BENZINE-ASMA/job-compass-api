@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface ApplicationService {
     ApplicationDTO applyToJob(ApplicationRequestDTO dto);
     List<ApplicationDTO> getApplicationsByUserId(UUID userId);
-    List<SimpleUserDTO> getApplicantsByJobId(UUID jobId);
+    List<ApplicationDTO> getApplicantsByJobId(UUID jobId);
 
 }
