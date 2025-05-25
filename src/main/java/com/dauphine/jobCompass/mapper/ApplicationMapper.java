@@ -11,6 +11,7 @@ import java.util.List;
 public interface ApplicationMapper {
 
     @Mapping(source = "job", target = "job")
+    @Mapping(source = "user.id", target = "user.id")
     ApplicationDTO toDto(Application application);
 
     List<ApplicationDTO> toDtoList(List<Application> applications);

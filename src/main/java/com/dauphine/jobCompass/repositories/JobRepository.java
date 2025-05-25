@@ -20,6 +20,22 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
             @Param("category") String category,
             @Param("contractType") String contractType,
             @Param("location") String location);
+
+    @Query("SELECT j FROM Job j WHERE " +
+            "j.owner.id = :ownerId AND " +
+            "(:search IS NULL OR j.title ILIKE %:search% OR j.description ILIKE %:search%) AND " +
+            "(:category IS NULL OR j.category.name ILIKE %:category%) AND " +
+            "(:contractType IS NULL OR j.jobType ILIKE %:contractType%) AND " +
+            "(:location IS NULL OR j.location ILIKE %:location%)")
+
+    List<Job> findFilteredJobsByOwner(
+            @Param("search") String search,
+            @Param("category") String category,
+            @Param("contractType") String contractType,
+            @Param("location") String location,
+            @Param("ownerId") UUID  ownerId
+    );
+
     @Query("SELECT DISTINCT j.location FROM Job j WHERE j.location IS NOT NULL AND j.location <> ''")
     List<String> findDistinctLocations();
 
