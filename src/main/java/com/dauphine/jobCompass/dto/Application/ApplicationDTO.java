@@ -2,6 +2,7 @@ package com.dauphine.jobCompass.dto.Application;
 
 import com.dauphine.jobCompass.dto.Job.JobDTO;
 import com.dauphine.jobCompass.dto.User.UserDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,6 +14,7 @@ public class ApplicationDTO {
     private String coverLetter;
     private String resumeUrl;
     private String status;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime createdAt;
 
     public ApplicationDTO() {

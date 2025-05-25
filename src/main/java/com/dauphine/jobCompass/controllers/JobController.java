@@ -63,7 +63,20 @@ public class JobController {
             @RequestParam(required = false) String location) {
 
         List<JobDTO> jobs = jobService.getFilteredJobs(
-                new JobFilters(search, category, contractType, location)
+                new JobFilters(search, category, contractType, location, null)
+        );
+        return ResponseEntity.ok(jobs);
+    }
+    @GetMapping("/Jobs/filter/my-jobs")
+    public ResponseEntity<List<JobDTO>> filterJobsByOwner(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String contractType,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = true) UUID  ownerId) {
+
+        List<JobDTO> jobs = jobService.getFilteredJobsByOwnerId(
+                new JobFilters(search, category, contractType, location, ownerId)
         );
         return ResponseEntity.ok(jobs);
     }

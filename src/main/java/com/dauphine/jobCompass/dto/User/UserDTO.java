@@ -15,7 +15,7 @@ public class UserDTO {
     private String lastName;
     private String phone;
     private UserType userType;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime createdAt;
     private CompanyDTO company;
 

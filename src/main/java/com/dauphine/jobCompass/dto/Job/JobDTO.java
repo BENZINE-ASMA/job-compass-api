@@ -6,6 +6,7 @@ import com.dauphine.jobCompass.dto.Company.SimpleCompanyDTO;
 import com.dauphine.jobCompass.model.JobCategory;
 import com.dauphine.jobCompass.model.Skill;
 import com.dauphine.jobCompass.model.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,7 +21,9 @@ public class JobDTO {
     private String salary;
     private String location;
     private String status;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate expiryDate;
     //    private SimpleCompanyDTO company;
 //    private String categoryName;
