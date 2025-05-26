@@ -5,6 +5,7 @@ import com.dauphine.jobCompass.dto.Application.ApplicationDTO;
 import com.dauphine.jobCompass.dto.Application.ApplicationRequestDTO;
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.dauphine.jobCompass.model.Application;
+import com.dauphine.jobCompass.model.enums.ApplicationStatus;
 import com.dauphine.jobCompass.services.Application.ApplicationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,5 +39,14 @@ public class ApplicationController {
     public ResponseEntity<List<ApplicationDTO>> getApplicantsByJobId(@PathVariable UUID jobId) {
         List<ApplicationDTO> applicants = applicationService.getApplicantsByJobId(jobId);
         return ResponseEntity.ok(applicants);
+    }
+
+    @PutMapping("/{applicationId}/status")  // au lieu de @PatchMapping
+    public ResponseEntity<Void> updateApplicationStatus(
+            @PathVariable UUID applicationId,
+            @RequestParam ApplicationStatus status) {
+        System.out.println(status.toLowerCase());
+        applicationService.updateApplicationStatus(applicationId, status);
+        return ResponseEntity.ok().build();
     }
 }

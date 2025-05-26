@@ -12,6 +12,7 @@ import com.dauphine.jobCompass.mapper.UserMapper;
 import com.dauphine.jobCompass.model.Application;
 import com.dauphine.jobCompass.model.Job;
 import com.dauphine.jobCompass.model.User;
+import com.dauphine.jobCompass.model.enums.ApplicationStatus;
 import com.dauphine.jobCompass.repositories.ApplicationRepository;
 import com.dauphine.jobCompass.repositories.JobRepository;
 import com.dauphine.jobCompass.repositories.UserRepository;
@@ -79,6 +80,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     public List<ApplicationDTO> getApplicantsByJobId(UUID jobId) {
         List<Application> applications = applicationRepository.findByJobId(jobId);
         return applicationMapper.toDtoList(applications);
+    }
+
+    @Override
+    public void updateApplicationStatus(UUID applicationId, ApplicationStatus status) {
+        applicationRepository.updateApplicationStatus(applicationId, status.toLowerCase());
     }
 
 
