@@ -2,12 +2,15 @@ package com.dauphine.jobCompass.dto.User;
 
 
 import com.dauphine.jobCompass.model.enums.UserType;
+import jakarta.validation.constraints.Email;
 
 public class UserUpdateRequest {
     private String firstName;
     private String lastName;
     private String phone;
-    private UserType userType;
+    @Email(message = "Invalid email format")
+    private String email;
+    private String password;
 
     public String getFirstName() {
         return firstName;
@@ -33,11 +36,19 @@ public class UserUpdateRequest {
         this.phone = phone;
     }
 
-    public UserType getUserType() {
-        return userType;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

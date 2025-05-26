@@ -36,15 +36,20 @@ public class UserServiceImpl implements UserService {
     private final ApplicationRepository applicationRepository;
     private final ApplicationMapper applicationMapper;
 
-    public UserServiceImpl(UserRepository userRepository,UserMapper userMapper,
-                           ApplicationRepository applicationRepository,ApplicationMapper applicationMapper, CompanyService companyService){
-        this.userRepository=userRepository;
-        this.userMapper=userMapper;
-        this.passwordEncoder=new BCryptPasswordEncoder();
-        this.applicationRepository =applicationRepository;
-        this.applicationMapper=applicationMapper;
-        this.companyService=companyService;
+    public UserServiceImpl(UserRepository userRepository,
+                           UserMapper userMapper,
+                           ApplicationRepository applicationRepository,
+                           ApplicationMapper applicationMapper,
+                           CompanyService companyService,
+                           PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        this.applicationRepository = applicationRepository;
+        this.applicationMapper = applicationMapper;
+        this.companyService = companyService;
+        this.passwordEncoder = passwordEncoder;
     }
+
     public SimpleUserDTO create(UserCreationRequest request) {
         if(userRepository.existsByEmail(request.getEmail())) {
             throw new UserEmailAlreadyExistsException(request.getEmail());
@@ -112,7 +117,10 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPhone(request.getPhone());
-        user.setUserType(request.getUserType());
+        user.setEmail(request.getEmail());
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        }
 
         return userRepository.save(user);
     }
@@ -125,8 +133,10 @@ public class UserServiceImpl implements UserService {
         if (request.getFirstName() != null) user.setFirstName(request.getFirstName());
         if (request.getLastName() != null) user.setLastName(request.getLastName());
         if (request.getPhone() != null) user.setPhone(request.getPhone());
-        if (request.getUserType() != null) user.setUserType(request.getUserType());
-
+        if(request.getEmail() != null) user.setEmail(request.getEmail());
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        }
         return userRepository.save(user);
     }
 
