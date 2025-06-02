@@ -3,6 +3,7 @@ import com.dauphine.jobCompass.dto.Job.JobCreationRequest;
 import com.dauphine.jobCompass.dto.Job.JobDTO;
 import com.dauphine.jobCompass.dto.JobFilters.JobFilters;
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
+import com.dauphine.jobCompass.exceptions.ResourceNotFoundException;
 import com.dauphine.jobCompass.model.Job;
 import com.dauphine.jobCompass.services.Application.ApplicationService;
 import com.dauphine.jobCompass.services.Job.JobService;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -102,6 +104,28 @@ public class JobController {
     @GetMapping("Jobs/locations")
     public List<String> getAllLocations() {
         return jobService.getAllLocations();
+    }
+
+    @DeleteMapping("/Job/delete/{id}")
+    @Operation(summary = "Delete a job by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Job deleted"),
+            @ApiResponse(responseCode = "404", description = "Job not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<String> deleteJob(@PathVariable UUID id) {
+        try {
+            jobService.deleteJob(id);
+            return ResponseEntity.noContent().build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Job not found with id: " + id); // Simple String
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to delete job: " + e.getMessage());
+        }
     }
 
 

@@ -89,6 +89,13 @@ public class JobServiceImpl implements JobService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteJob (UUID id){
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + id));
+        jobRepository.delete(job);
+    }
+
 
 
 
