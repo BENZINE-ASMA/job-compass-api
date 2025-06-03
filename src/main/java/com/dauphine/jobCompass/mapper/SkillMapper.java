@@ -2,24 +2,23 @@ package com.dauphine.jobCompass.mapper;
 
 import com.dauphine.jobCompass.dto.Skill.SkillDTO;
 import com.dauphine.jobCompass.model.Skill;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
-public class SkillMapper {
+@Mapper(componentModel = "spring")
+public interface SkillMapper {
 
-    public SkillDTO toDTO(Skill skill) {
-        return new SkillDTO(skill.getId(), skill.getName(), skill.isPredefined());
-    }
+    SkillDTO toDTO(Skill skill);
 
-    public List<SkillDTO> toDTOList(List<Skill> skills) {
-        return skills.stream().map(this::toDTO).collect(Collectors.toList());
-    }
+    List<SkillDTO> toDTOList(List<Skill> skills);
 
-    public Set<SkillDTO> toDTOSet(Set<Skill> skills) {
-        return skills.stream().map(this::toDTO).collect(Collectors.toSet());
-    }
+    Set<SkillDTO> toDTOSet(Set<Skill> skills);
+
+    Skill toEntity(SkillDTO skillDTO);
+
+
 }

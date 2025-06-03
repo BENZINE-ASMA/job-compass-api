@@ -7,7 +7,7 @@ import com.dauphine.jobCompass.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {CompanyMapper.class, SkillMapper.class})
 public interface JobMapper {
 
     @Mapping(source = "owner.id", target = "ownerId")

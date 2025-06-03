@@ -29,7 +29,6 @@ public class JobSkillController {
         try {
             jobSkillService.addSkillsToJob(jobId, request.getSkillIds(), request.getSkillNames());
 
-            // Retourner un objet JSON au lieu d'une string
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Skills added to job successfully.");
             response.put("success", true);

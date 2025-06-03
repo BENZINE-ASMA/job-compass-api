@@ -3,6 +3,7 @@ package com.dauphine.jobCompass.dto.Job;
 import com.dauphine.jobCompass.dto.Category.CategoryDTO;
 import com.dauphine.jobCompass.dto.Company.CompanyDTO;
 import com.dauphine.jobCompass.dto.Company.SimpleCompanyDTO;
+import com.dauphine.jobCompass.dto.Skill.SkillDTO;
 import com.dauphine.jobCompass.model.JobCategory;
 import com.dauphine.jobCompass.model.Skill;
 import com.dauphine.jobCompass.model.User;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,7 +32,7 @@ public class JobDTO {
     private UUID ownerId;
     private CompanyDTO company;
     private CategoryDTO category;
-    private Skill skill;
+    private List<SkillDTO> requiredSkills;;
 
     public UUID getId() {
         return id;
@@ -128,11 +130,19 @@ public class JobDTO {
         this.category = category;
     }
 
-    public Skill getSkill() {
-        return skill;
+
+    public List<SkillDTO> getRequiredSkills() {
+        return requiredSkills;
     }
 
-    public void setSkill(Skill skill) {
-        this.skill = skill;
+    public void setRequiredSkills(List<SkillDTO> requiredSkills) {
+        this.requiredSkills = requiredSkills;
+    }
+
+    public boolean hasRequiredSkills() {
+        return requiredSkills != null && !requiredSkills.isEmpty();
+    }
+    public int getSkillsCount() {
+        return requiredSkills != null ? requiredSkills.size() : 0;
     }
 }
