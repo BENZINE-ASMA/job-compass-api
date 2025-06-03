@@ -12,8 +12,7 @@ public interface JobSkillService {
     void removeSkillFromJob(UUID jobId, UUID skillId);
     Set<Skill> getSkillsForJob(UUID jobId);
     public long countSkillsForJob(UUID jobId);
-    public SkillDTO addSkillToJobByName(UUID jobId, String skillName);
-    public void addSkillToJob(UUID jobId, UUID skillId);
+    public void addSkillsToJob(UUID jobId, List<UUID> skillIds, List<String> skillNames);
     public boolean jobHasSkill(UUID jobId, UUID skillId);
     public boolean jobHasSkillByName(UUID jobId, String skillName);
     public List<SkillDTO> getSkillsDTOForJob(UUID jobId);

@@ -26,38 +26,6 @@ public class JobSkillServiceImpl implements JobSkillService {
 
     @Override
     @Transactional
-    public SkillDTO addSkillToJobByName(UUID jobId, String skillName) {
-        if (skillName == null || skillName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Skill name cannot be null or empty");
-        }
-
-        Job job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new IllegalArgumentException("Job not found with ID: " + jobId));
-
-        String trimmedSkillName = skillName.trim();
-
-        Optional<Skill> existingSkill = skillRepository.findByNameIgnoreCase(trimmedSkillName);
-
-        Skill skill;
-        if (existingSkill.isPresent()) {
-            skill = existingSkill.get();
-        } else {
-            skill = new Skill();
-            skill.setName(trimmedSkillName);
-            skill.setPredefined(false);
-            skill = skillRepository.save(skill);
-        }
-
-        if (job.getRequiredSkills().contains(skill)) {
-            throw new IllegalArgumentException("Job already has this skill: " + trimmedSkillName);
-        }
-        job.getRequiredSkills().add(skill);
-        jobRepository.save(job);
-        return skillMapper.toDTO(skill);
-    }
-
-    @Override
-    @Transactional
     public void addSkillsToJob(UUID jobId, List<UUID> skillIds) {
         if (skillIds == null || skillIds.isEmpty()) {
             throw new IllegalArgumentException("Skill IDs list cannot be null or empty");
@@ -86,7 +54,26 @@ public class JobSkillServiceImpl implements JobSkillService {
 
     @Override
     @Transactional
-    public void addSkillToJob(UUID jobId, UUID skillId) {
+    public void addSkillsToJob(UUID jobId, List<UUID> skillIds, List<String> skillNames) {
+        // Ajouter les compétences existantes par ID
+        if (skillIds != null && !skillIds.isEmpty()) {
+            for (UUID skillId : skillIds) {
+                // Votre logique d'ajout par ID
+                addExistingSkillToJob(jobId, skillId);
+            }
+        }
+
+        // Ajouter les nouvelles compétences par nom
+        if (skillNames != null && !skillNames.isEmpty()) {
+            for (String skillName : skillNames) {
+                // Votre logique d'ajout par nom
+                addNewSkillToJob(jobId, skillName);
+            }
+        }
+    }
+
+
+    private void addExistingSkillToJob(UUID jobId, UUID skillId) {
         if (skillId == null) {
             throw new IllegalArgumentException("Skill ID cannot be null");
         }
@@ -97,10 +84,46 @@ public class JobSkillServiceImpl implements JobSkillService {
         Skill skill = skillRepository.findById(skillId)
                 .orElseThrow(() -> new IllegalArgumentException("Skill not found with ID: " + skillId));
 
+        // Vérifier si la compétence n'est pas déjà associée au job
         if (job.getRequiredSkills().contains(skill)) {
-            throw new IllegalArgumentException("Job already has this skill");
+            throw new IllegalArgumentException("Job already has this skill: " + skill.getName());
         }
 
+        // Ajouter la compétence au job
+        job.getRequiredSkills().add(skill);
+        jobRepository.save(job);
+    }
+    private void addNewSkillToJob(UUID jobId, String skillName) {
+        if (skillName == null || skillName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Skill name cannot be null or empty");
+        }
+
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new IllegalArgumentException("Job not found with ID: " + jobId));
+
+        String trimmedSkillName = skillName.trim();
+
+        // Vérifier si une compétence avec ce nom existe déjà
+        Optional<Skill> existingSkill = skillRepository.findByNameIgnoreCase(trimmedSkillName);
+
+        Skill skill;
+        if (existingSkill.isPresent()) {
+            // Si la compétence existe déjà, l'utiliser
+            skill = existingSkill.get();
+        } else {
+            // Sinon, créer une nouvelle compétence
+            skill = new Skill();
+            skill.setName(trimmedSkillName);
+            skill.setPredefined(false);
+            skill = skillRepository.save(skill);
+        }
+
+        // Vérifier si la compétence n'est pas déjà associée au job
+        if (job.getRequiredSkills().contains(skill)) {
+            throw new IllegalArgumentException("Job already has this skill: " + trimmedSkillName);
+        }
+
+        // Ajouter la compétence au job
         job.getRequiredSkills().add(skill);
         jobRepository.save(job);
     }

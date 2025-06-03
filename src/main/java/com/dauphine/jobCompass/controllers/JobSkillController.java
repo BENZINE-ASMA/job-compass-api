@@ -1,14 +1,13 @@
 package com.dauphine.jobCompass.controllers;
 
+import com.dauphine.jobCompass.dto.Skill.AddSkillsToJobRequest;
 import com.dauphine.jobCompass.dto.Skill.SkillDTO;
 import com.dauphine.jobCompass.mapper.SkillMapper;
 import com.dauphine.jobCompass.services.skill.JobSkillService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/jobs")
@@ -25,11 +24,27 @@ public class JobSkillController {
     @PostMapping("/{jobId}/skills")
     public ResponseEntity<?> addSkillsToJob(
             @PathVariable UUID jobId,
-            @RequestBody List<UUID> skillIds
+            @RequestBody AddSkillsToJobRequest request
     ) {
-        jobSkillService.addSkillsToJob(jobId, skillIds);
-        return ResponseEntity.ok("Skills added to job.");
+        try {
+            jobSkillService.addSkillsToJob(jobId, request.getSkillIds(), request.getSkillNames());
+
+            // Retourner un objet JSON au lieu d'une string
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Skills added to job successfully.");
+            response.put("success", true);
+            response.put("skillsAdded", request.getSkillIds().size() + request.getSkillNames().size());
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            errorResponse.put("success", false);
+
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
     }
+
 
     @DeleteMapping("/{jobId}/skills/{skillId}")
     public ResponseEntity<?> removeSkillFromJob(
@@ -45,16 +60,6 @@ public class JobSkillController {
         Set<SkillDTO> dtos = skillMapper.toDTOSet(jobSkillService.getSkillsForJob(jobId));
         return ResponseEntity.ok(dtos);
     }
-
-    @PostMapping(path = "/{jobId}/skills/by-name",consumes = "text/plain")
-    public ResponseEntity<SkillDTO> addSkillByName(
-            @PathVariable UUID jobId,
-            @RequestBody String skillName
-    ) {
-        SkillDTO dto = jobSkillService.addSkillToJobByName(jobId, skillName);
-        return ResponseEntity.ok(dto);
-    }
-
 
     @GetMapping("/{jobId}/skills/{skillId}/has")
     public ResponseEntity<Boolean> jobHasSkill(
