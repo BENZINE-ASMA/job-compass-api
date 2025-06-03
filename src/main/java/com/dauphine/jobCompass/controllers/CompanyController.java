@@ -1,6 +1,7 @@
 package com.dauphine.jobCompass.controllers;
 
 import com.dauphine.jobCompass.dto.Company.CompanyCreationRequest;
+import com.dauphine.jobCompass.dto.Company.CompanyDTO;
 import com.dauphine.jobCompass.model.Company;
 import com.dauphine.jobCompass.model.JobCategory;
 import com.dauphine.jobCompass.services.Company.CompanyService;
@@ -42,5 +43,13 @@ public class CompanyController {
         Company company = companyService.createCompany(request);
         return ResponseEntity.created(URI.create("/api/companies/" + company.getId()))
                 .body(company);
+    }
+
+    @GetMapping("Companies/filter")
+    public List<CompanyDTO> filterCompanies(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String location
+    ) {
+        return companyService.filterCompanies(search, location);
     }
 }

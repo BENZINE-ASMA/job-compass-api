@@ -5,16 +5,21 @@ import com.dauphine.jobCompass.dto.Job.JobDTO;
 import com.dauphine.jobCompass.dto.JobFilters.JobFilters;
 import com.dauphine.jobCompass.exceptions.ResourceNotFoundException;
 import com.dauphine.jobCompass.mapper.JobMapper;
+import com.dauphine.jobCompass.model.Company;
 import com.dauphine.jobCompass.model.Job;
+import com.dauphine.jobCompass.model.JobCategory;
+import com.dauphine.jobCompass.repositories.CategoryRepository;
 import com.dauphine.jobCompass.repositories.JobRepository;
 import com.dauphine.jobCompass.services.Company.CompanyService;
 import com.dauphine.jobCompass.services.JobCategory.JobCategoryService;
 import com.dauphine.jobCompass.services.user.UserService;
+import jdk.jfr.Category;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,14 +29,15 @@ public class JobServiceImpl implements JobService {
     private final CompanyService companyService;
     private final JobCategoryService jobCategoryService;
     private final UserService userService;
+    private final CategoryRepository categoryRepository;
 
-    public JobServiceImpl(JobRepository jobRepository, JobMapper jobMapper, CompanyService companyService, JobCategoryService jobCategoryService, UserService userService) {
+    public JobServiceImpl(JobRepository jobRepository, JobMapper jobMapper, CompanyService companyService, JobCategoryService jobCategoryService, UserService userService, CategoryRepository categoryRepository) {
         this.jobRepository = jobRepository;
         this.jobMapper = jobMapper;
         this.companyService = companyService;
         this.jobCategoryService = jobCategoryService;
         this.userService = userService;
-
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -88,6 +94,36 @@ public class JobServiceImpl implements JobService {
                 .distinct()
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public JobDTO updateJob(UUID id, JobCreationRequest request) {
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job not found with id: " + id));
+
+        applyIfChanged(request.getTitle(), job.getTitle(), job::setTitle);
+        applyIfChanged(request.getDescription(), job.getDescription(), job::setDescription);
+        applyIfChanged(request.getSalary(), job.getSalary(), job::setSalary);
+        applyIfChanged(request.getJobType(), job.getJobType(), job::setJobType);
+        applyIfChanged(request.getLocation(), job.getLocation(), job::setLocation);
+        applyIfChanged(request.getExpiryDate(), job.getExpiryDate(), job::setExpiryDate);
+
+        if (request.getCategoryId() != null &&
+                (job.getCategory() == null || !request.getCategoryId().equals(job.getCategory().getId()))) {
+            JobCategory category = categoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
+            job.setCategory(category);
+        }
+
+        Job updatedJob = jobRepository.save(job);
+        return jobMapper.toDto(updatedJob);
+    }
+
+    private <T> void applyIfChanged(T newValue, T oldValue, Consumer<T> setter) {
+        if (newValue != null && !newValue.equals(oldValue)) {
+            setter.accept(newValue);
+        }
+    }
+
 
     @Override
     public void deleteJob (UUID id){

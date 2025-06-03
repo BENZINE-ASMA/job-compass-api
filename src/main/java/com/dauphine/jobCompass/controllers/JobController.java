@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.midi.SysexMessage;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -76,7 +77,7 @@ public class JobController {
             @RequestParam(required = false) String contractType,
             @RequestParam(required = false) String location,
             @RequestParam(required = true) UUID  ownerId) {
-
+        System.out.println(category);
         List<JobDTO> jobs = jobService.getFilteredJobsByOwnerId(
                 new JobFilters(search, category, contractType, location, ownerId)
         );
@@ -106,7 +107,15 @@ public class JobController {
         return jobService.getAllLocations();
     }
 
-    @DeleteMapping("/Job/delete/{id}")
+    @PutMapping("Jobs/update/{id}")
+    public ResponseEntity<JobDTO> updateJob(@PathVariable UUID id, @RequestBody JobCreationRequest request) {
+        JobDTO updatedJob = jobService.updateJob(id, request);
+        return ResponseEntity.ok(updatedJob);
+    }
+
+
+
+    @DeleteMapping("/Jobs/delete/{id}")
     @Operation(summary = "Delete a job by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Job deleted"),
@@ -127,6 +136,7 @@ public class JobController {
                     .body("Failed to delete job: " + e.getMessage());
         }
     }
+
 
 
 }

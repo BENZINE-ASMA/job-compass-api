@@ -9,4 +9,5 @@ public interface JobCategoryService {
     JobCategory getJobCategoryById(UUID jobCategoryId);
     List<JobCategory> getAllCategories();
     JobCategory createCategory(JobCategory category);
+
 }

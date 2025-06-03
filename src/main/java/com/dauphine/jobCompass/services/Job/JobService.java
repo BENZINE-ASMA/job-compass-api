@@ -17,6 +17,7 @@ List<JobDTO> getFilteredJobsByOwnerId(JobFilters filters);
 JobDTO createJob(JobCreationRequest jobCreationRequest);
 JobDTO getJobById (UUID id);
 List<String> getAllLocations();
+JobDTO updateJob(UUID id, JobCreationRequest jobUpdateRequest);
 void deleteJob (UUID id);
 
 }

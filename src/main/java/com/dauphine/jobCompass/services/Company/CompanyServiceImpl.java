@@ -3,9 +3,12 @@ package com.dauphine.jobCompass.services.Company;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.dauphine.jobCompass.dto.Company.CompanyCreationRequest;
+import com.dauphine.jobCompass.dto.Company.CompanyDTO;
 import com.dauphine.jobCompass.exceptions.ResourceNotFoundException;
+import com.dauphine.jobCompass.mapper.CompanyMapper;
 import com.dauphine.jobCompass.model.Company;
 import com.dauphine.jobCompass.repositories.CompanyRepository;
 import org.springframework.stereotype.Service;
@@ -13,9 +16,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CompanyServiceImpl implements CompanyService{
     private final CompanyRepository companyRepository;
+    private final CompanyMapper companyMapper;
 
-    public CompanyServiceImpl (CompanyRepository companyRepository){
+    public CompanyServiceImpl (CompanyRepository companyRepository, CompanyMapper companyMapper) {
         this.companyRepository = companyRepository;
+        this.companyMapper = companyMapper;
     }
 
     @Override
@@ -47,5 +52,13 @@ public class CompanyServiceImpl implements CompanyService{
         company.setCreatedAt(LocalDateTime.now());
 
         return companyRepository.save(company);
+    }
+
+    @Override
+    public List<CompanyDTO> filterCompanies(String search, String location) {
+        List<Company> companies = companyRepository.filterCompanies(search, location);
+        return companies.stream()
+                .map(companyMapper::toDto)
+                .collect(Collectors.toList());
     }
 }
