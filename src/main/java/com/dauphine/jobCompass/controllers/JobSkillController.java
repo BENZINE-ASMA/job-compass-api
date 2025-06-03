@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/jobs")
+@RequestMapping("/api/v1/jobs")
 public class JobSkillController {
 
     private final JobSkillService jobSkillService;
@@ -46,7 +46,7 @@ public class JobSkillController {
         return ResponseEntity.ok(dtos);
     }
 
-    @PostMapping("/{jobId}/skills/by-name")
+    @PostMapping(path = "/{jobId}/skills/by-name",consumes = "text/plain")
     public ResponseEntity<SkillDTO> addSkillByName(
             @PathVariable UUID jobId,
             @RequestBody String skillName

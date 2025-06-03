@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/skills")
+@RequestMapping("/api/v1/skills")
 public class SkillController {
 
     private final SkillRepository skillRepository;
