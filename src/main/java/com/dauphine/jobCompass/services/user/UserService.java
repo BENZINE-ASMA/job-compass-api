@@ -21,6 +21,6 @@ public interface UserService {
     User updateUser(UUID id, UserUpdateRequest request);       // PUT
     User patchUser(UUID id, UserUpdateRequest request);
     List<ApplicationDTO> getApplicationsByUserId(UUID userId);
-
+    SimpleUserDTO getSimpleUserById(UUID id);
 
 }

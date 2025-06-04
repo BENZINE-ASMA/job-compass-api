@@ -1,163 +1,207 @@
 package com.dauphine.jobCompass.controllers;
+
 import com.dauphine.jobCompass.dto.Job.JobCreationRequest;
 import com.dauphine.jobCompass.dto.Job.JobDTO;
 import com.dauphine.jobCompass.dto.JobFilters.JobFilters;
-import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
-import com.dauphine.jobCompass.exceptions.ResourceNotFoundException;
-import com.dauphine.jobCompass.model.Job;
 import com.dauphine.jobCompass.services.Application.ApplicationService;
 import com.dauphine.jobCompass.services.Job.JobService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.http.HttpStatus;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sound.midi.SysexMessage;
-import java.util.Collections;
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1")
-
+@Tag(name = "Jobs", description = "API pour la gestion des offres d'emploi")
 public class JobController {
+
     private final JobService jobService;
     private final ApplicationService applicationService;
 
-    public JobController(JobService jobService,ApplicationService applicationService) {
+    public JobController(JobService jobService, ApplicationService applicationService) {
         this.jobService = jobService;
         this.applicationService = applicationService;
     }
 
-    @Operation(summary = "Get all jobs by owner ID")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved jobs"),
-            @ApiResponse(responseCode = "400", description = "Invalid UUID format")
+    @GetMapping("/jobs")
+    @Operation(
+            summary = "Récupérer toutes les offres d'emploi",
+            description = "Obtenir la liste complète de toutes les offres d'emploi disponibles"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Liste des offres d'emploi récupérée avec succès"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
     })
-    @GetMapping("/Jobs/owner/{ownerId}")
-    public ResponseEntity<List<JobDTO>> getJobsByOwnerId(@PathVariable String ownerId) {
-        try {
-            UUID uuid = UUID.fromString(ownerId);
-            List<JobDTO> jobs = jobService.getAllOwnersJobs(uuid);
-            return ResponseEntity.ok(jobs);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Collections.emptyList()); // ou un message d'erreur
-        }
-    }
-
-    @Operation(summary = "Get all users with basic information",
-            description = "Retrieves all simple user's information")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved users")
-    })
-    @GetMapping("/Jobs")
-    public ResponseEntity<List<JobDTO>> getAllSimpleJobs() {
-        return ResponseEntity.ok(this.jobService.getAllJobs());
-    }
-
-    @GetMapping("/Jobs/filter")
-    public ResponseEntity<List<JobDTO>> filterJobs(
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) String contractType,
-            @RequestParam(required = false) String location) {
-
-        List<JobDTO> jobs = jobService.getFilteredJobs(
-                new JobFilters(search, category, contractType, location, null)
-        );
+    public ResponseEntity<List<JobDTO>> getAllJobs() {
+        List<JobDTO> jobs = jobService.getAllJobs();
         return ResponseEntity.ok(jobs);
     }
-    @GetMapping("/Jobs/filter/my-jobs")
-    public ResponseEntity<List<JobDTO>> filterJobsByOwner(
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) String contractType,
-            @RequestParam(required = false) String location,
-            @RequestParam(required = true) UUID  ownerId) {
-        System.out.println(category);
-        List<JobDTO> jobs = jobService.getFilteredJobsByOwnerId(
-                new JobFilters(search, category, contractType, location, ownerId)
-        );
-        return ResponseEntity.ok(jobs);
-    }
-    @Operation(summary = "Create new job")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved users")
-    })
-    @PostMapping("/Jobs")
-    public ResponseEntity<JobDTO> createJob(@RequestBody JobCreationRequest jobRequest) {
-        JobDTO createdJob = jobService.createJob(jobRequest);
-        return ResponseEntity.ok(createdJob);
-    }
 
-    @GetMapping("Jobs/{id}")
+    @GetMapping("/jobs/{id}")
+    @Operation(
+            summary = "Récupérer une offre d'emploi par ID",
+            description = "Obtenir les détails d'une offre d'emploi spécifique"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Offre d'emploi trouvée"),
+            @ApiResponse(responseCode = "404", description = "Offre d'emploi non trouvée"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+    })
     public ResponseEntity<JobDTO> getJobById(
-            @Parameter(description = "UUID of the job to be retrieved", required = true, example = "123e4567-e89b-12d3-a456-426614174000")
+            @Parameter(description = "ID de l'offre d'emploi", required = true,
+                    example = "123e4567-e89b-12d3-a456-426614174000")
             @PathVariable UUID id) {
-
         JobDTO job = jobService.getJobById(id);
         return ResponseEntity.ok(job);
     }
 
-    @GetMapping("Jobs/locations")
-    public List<String> getAllLocations() {
-        return jobService.getAllLocations();
+    @GetMapping("/jobs/owner/{ownerId}")
+    @Operation(
+            summary = "Récupérer les offres d'emploi par propriétaire",
+            description = "Obtenir toutes les offres d'emploi créées par un propriétaire spécifique"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Offres d'emploi récupérées avec succès"),
+            @ApiResponse(responseCode = "400", description = "Format UUID invalide"),
+            @ApiResponse(responseCode = "404", description = "Propriétaire non trouvé"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+    })
+    public ResponseEntity<List<JobDTO>> getJobsByOwnerId(
+            @Parameter(description = "ID du propriétaire", required = true)
+            @PathVariable UUID ownerId) {
+        List<JobDTO> jobs = jobService.getAllOwnersJobs(ownerId);
+        return ResponseEntity.ok(jobs);
     }
 
-    @PutMapping("Jobs/update/{id}")
-    public ResponseEntity<JobDTO> updateJob(@PathVariable UUID id, @RequestBody JobCreationRequest request) {
+    @GetMapping("/jobs/filter")
+    @Operation(
+            summary = "Filtrer les offres d'emploi",
+            description = "Rechercher des offres d'emploi selon différents critères"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Résultats de recherche récupérés avec succès"),
+            @ApiResponse(responseCode = "400", description = "Paramètres de recherche invalides"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+    })
+    public ResponseEntity<List<JobDTO>> filterJobs(
+            @Parameter(description = "Terme de recherche")
+            @RequestParam(required = false) String search,
+            @Parameter(description = "Catégorie d'emploi")
+            @RequestParam(required = false) String category,
+            @Parameter(description = "Type de contrat")
+            @RequestParam(required = false) String contractType,
+            @Parameter(description = "Localisation")
+            @RequestParam(required = false) String location) {
+
+        JobFilters filters = new JobFilters(search, category, contractType, location, null);
+        List<JobDTO> jobs = jobService.getFilteredJobs(filters);
+        return ResponseEntity.ok(jobs);
+    }
+
+    @GetMapping("/jobs/filter/my-jobs")
+    @Operation(
+            summary = "Filtrer mes offres d'emploi",
+            description = "Rechercher parmi les offres d'emploi d'un propriétaire spécifique"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Résultats de recherche récupérés avec succès"),
+            @ApiResponse(responseCode = "400", description = "Paramètres de recherche invalides"),
+            @ApiResponse(responseCode = "404", description = "Propriétaire non trouvé"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+    })
+    public ResponseEntity<List<JobDTO>> filterJobsByOwner(
+            @Parameter(description = "Terme de recherche")
+            @RequestParam(required = false) String search,
+            @Parameter(description = "Catégorie d'emploi")
+            @RequestParam(required = false) String category,
+            @Parameter(description = "Type de contrat")
+            @RequestParam(required = false) String contractType,
+            @Parameter(description = "Localisation")
+            @RequestParam(required = false) String location,
+            @Parameter(description = "ID du propriétaire", required = true)
+            @RequestParam UUID ownerId) {
+
+        JobFilters filters = new JobFilters(search, category, contractType, location, ownerId);
+        List<JobDTO> jobs = jobService.getFilteredJobsByOwnerId(filters);
+        return ResponseEntity.ok(jobs);
+    }
+
+    @GetMapping("/jobs/locations")
+    @Operation(
+            summary = "Récupérer toutes les localisations",
+            description = "Obtenir la liste de toutes les localisations disponibles pour les offres d'emploi"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Liste des localisations récupérée avec succès"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+    })
+    public ResponseEntity<List<String>> getAllLocations() {
+        List<String> locations = jobService.getAllLocations();
+        return ResponseEntity.ok(locations);
+    }
+
+    @PostMapping("/jobs")
+    @Operation(
+            summary = "Créer une nouvelle offre d'emploi",
+            description = "Ajouter une nouvelle offre d'emploi dans le système"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Offre d'emploi créée avec succès"),
+            @ApiResponse(responseCode = "400", description = "Données d'offre d'emploi invalides"),
+            @ApiResponse(responseCode = "404", description = "Propriétaire ou entreprise non trouvé"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+    })
+    public ResponseEntity<JobDTO> createJob(
+            @Valid @RequestBody JobCreationRequest jobRequest) {
+        JobDTO createdJob = jobService.createJob(jobRequest);
+        return ResponseEntity
+                .created(URI.create("/api/v1/jobs/" + createdJob.getId()))
+                .body(createdJob);
+    }
+
+    @PutMapping("/jobs/{id}")
+    @Operation(
+            summary = "Mettre à jour une offre d'emploi",
+            description = "Modifier une offre d'emploi existante"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Offre d'emploi mise à jour avec succès"),
+            @ApiResponse(responseCode = "400", description = "Données invalides"),
+            @ApiResponse(responseCode = "404", description = "Offre d'emploi non trouvée"),
+            @ApiResponse(responseCode = "403", description = "Non autorisé à modifier cette offre"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+    })
+    public ResponseEntity<JobDTO> updateJob(
+            @Parameter(description = "ID de l'offre d'emploi", required = true)
+            @PathVariable UUID id,
+            @Valid @RequestBody JobCreationRequest request) {
         JobDTO updatedJob = jobService.updateJob(id, request);
         return ResponseEntity.ok(updatedJob);
     }
 
-
-
-    @DeleteMapping("/Jobs/delete/{id}")
-    @Operation(summary = "Delete a job by ID")
+    @DeleteMapping("/jobs/{id}")
+    @Operation(
+            summary = "Supprimer une offre d'emploi",
+            description = "Supprimer définitivement une offre d'emploi"
+    )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Job deleted"),
-            @ApiResponse(responseCode = "404", description = "Job not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "204", description = "Offre d'emploi supprimée avec succès"),
+            @ApiResponse(responseCode = "404", description = "Offre d'emploi non trouvée"),
+            @ApiResponse(responseCode = "403", description = "Non autorisé à supprimer cette offre"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
     })
-    public ResponseEntity<String> deleteJob(@PathVariable UUID id) {
-        try {
-            jobService.deleteJob(id);
-            return ResponseEntity.noContent().build();
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Job not found with id: " + id); // Simple String
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to delete job: " + e.getMessage());
-        }
+    public ResponseEntity<Void> deleteJob(
+            @Parameter(description = "ID de l'offre d'emploi", required = true)
+            @PathVariable UUID id) {
+        jobService.deleteJob(id);
+        return ResponseEntity.noContent().build();
     }
-
-
-
 }
- /*   // GET /api/v1/jobs (Filtres optionnels)
-    @GetMapping
-    public List<Job> searchJobs(
-            @RequestParam(required = false) String location,
-            @RequestParam(required = false) String jobType,
-            @RequestParam(required = false) Double minSalary) { ... }
-
-    // GET /api/v1/jobs/{id}
-    @GetMapping("/{id}")
-    public Job getJobById(@PathVariable Long id) { ... }
-
-    // POST /api/v1/jobs
-    @PostMapping
-    public Job createJob(@RequestBody JobCreationRequest request) { ... }
-
-    // DELETE /api/v1/jobs/{id}
-    @DeleteMapping("/{id}")
-    public void deleteJob(@PathVariable Long id) { ... }
-
-}
- */

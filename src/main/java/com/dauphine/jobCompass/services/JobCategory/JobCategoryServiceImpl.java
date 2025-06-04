@@ -18,7 +18,11 @@ public class JobCategoryServiceImpl implements JobCategoryService {
     }
 
     @Override
-    public JobCategory getJobCategoryById(UUID jobCategoryId) {
+    public JobCategory getJobCategoryById(UUID jobCategoryId) throws ResourceNotFoundException {
+        if (jobCategoryId == null) {
+            throw new IllegalArgumentException("Job category ID cannot be null");
+        }
+
         return jobCategoryRepository.findById(jobCategoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Job Category not found with id: " + jobCategoryId));
@@ -30,11 +34,23 @@ public class JobCategoryServiceImpl implements JobCategoryService {
     }
 
     @Override
-    public JobCategory createCategory(JobCategory category) {
-        // Générer un UUID s'il n'est pas déjà défini
+    public JobCategory createCategory(JobCategory category) throws IllegalArgumentException {
+        if (category == null) {
+            throw new IllegalArgumentException("Category cannot be null");
+        }
+
+        if (category.getName() == null || category.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Category name is required and cannot be empty");
+        }
+
+
+        category.setName(category.getName().trim());
+
+
         if (category.getId() == null) {
             category.setId(UUID.randomUUID());
         }
+
         return jobCategoryRepository.save(category);
     }
 }

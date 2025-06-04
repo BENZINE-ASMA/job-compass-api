@@ -8,7 +8,6 @@ public class ApplicationRequestDTO {
     private String coverLetter;
     private String resumeUrl;
 
-    // Getters / Setters
     public UUID getJobId() {
         return jobId;
     }
