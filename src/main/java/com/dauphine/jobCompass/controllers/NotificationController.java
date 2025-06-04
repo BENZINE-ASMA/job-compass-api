@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1/notifications")
 @Tag(name = "Notifications", description = "API de gestion des notifications")
@@ -54,10 +55,17 @@ public class NotificationController {
             @PathVariable UUID notificationId,
             @RequestParam boolean isRead) {
         try {
+            System.out.println(notificationId);
             NotificationDto updatedNotification = notificationService.updateNotificationReadStatus(notificationId, isRead);
             return ResponseEntity.ok(updatedNotification);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PatchMapping("/mark-all-read/{userId}")
+    public ResponseEntity<Integer> markAllNotificationsAsRead(@PathVariable UUID userId) {
+        int updatedCount = notificationService.markAllNotificationsAsRead(userId);
+        return ResponseEntity.ok(updatedCount);
     }
 }

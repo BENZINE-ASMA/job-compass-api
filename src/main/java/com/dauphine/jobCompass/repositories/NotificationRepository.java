@@ -1,6 +1,7 @@
 package com.dauphine.jobCompass.repositories;
 
 import com.dauphine.jobCompass.model.Notification;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,9 @@ public interface NotificationRepository extends JpaRepository<Notification, UUID
     @Modifying
     @Query("UPDATE Notification n SET n.read = true WHERE n.candidate = :userId AND n.read = false")
     void findByUserIdAndReadFalse(@Param("userId") String userId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Notification n SET n.read = true WHERE n.candidate.id = :userId")
+    int markAllAsRead(@Param("userId") UUID userId);
 }

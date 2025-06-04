@@ -81,5 +81,9 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationMapper.toDto(updatedNotification);
     }
 
+    public int markAllNotificationsAsRead(UUID userId) {
+        return notificationRepository.markAllAsRead(userId);
+    }
+
 
 }
