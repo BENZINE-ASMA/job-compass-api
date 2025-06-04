@@ -2,6 +2,9 @@ package com.dauphine.jobCompass.repositories;
 
 import com.dauphine.jobCompass.model.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,4 +14,7 @@ import java.util.UUID;
 public interface NotificationRepository extends JpaRepository<Notification, UUID> {
     List<Notification> findByCandidateIdOrderByCreatedAtDesc(UUID candidateId);
     List<Notification> findByCandidateIdAndIsReadFalseOrderByCreatedAtDesc(UUID candidateId);
+    @Modifying
+    @Query("UPDATE Notification n SET n.isRead = true WHERE n.candidate = :userId AND n.isRead = false")
+    void findByUserIdAndReadFalse(@Param("userId") String userId);
 }

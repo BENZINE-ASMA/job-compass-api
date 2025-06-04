@@ -2,6 +2,7 @@ package com.dauphine.jobCompass.controllers;
 
 import com.dauphine.jobCompass.dto.Application.ApplicationDTO;
 import com.dauphine.jobCompass.dto.Application.ApplicationRequestDTO;
+import com.dauphine.jobCompass.dto.Application.UpdateApplicationStatusDTO;
 import com.dauphine.jobCompass.dto.Notification.NotificationDto;
 import com.dauphine.jobCompass.exceptions.NotFoundException;
 import com.dauphine.jobCompass.model.Application;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -101,10 +103,13 @@ public class ApplicationController {
     public ResponseEntity<Void> updateApplicationStatus(
             @Parameter(description = "ID de la candidature", required = true)
             @PathVariable UUID applicationId,
-            @Parameter(description = "Nouveau statut de la candidature", required = true)
-            @RequestParam ApplicationStatus status) {
-        applicationService.updateApplicationStatus(applicationId, status);
-        if (status == ApplicationStatus.ACCEPTED || status == ApplicationStatus.REJECTED) {
+            @Valid @RequestBody UpdateApplicationStatusDTO updateDTO) {
+
+        ApplicationDTO updated = applicationService.updateApplicationStatus(
+                applicationId,
+                updateDTO.getStatus()
+        );
+        if (updateDTO.getStatus() == ApplicationStatus.ACCEPTED || updateDTO.getStatus() == ApplicationStatus.REJECTED) {
             Application application = applicationService.findById(applicationId)
                     .orElseThrow(() -> new NotFoundException("Application not found"));
 
@@ -112,8 +117,7 @@ public class ApplicationController {
             notificationDto.setCandidateId(application.getUser().getId());
             notificationDto.setRecruiterId(application.getJob().getOwner().getId());
             notificationDto.setApplicationId(applicationId);
-
-            String message = status == ApplicationStatus.ACCEPTED
+            String message = updateDTO.getStatus() == ApplicationStatus.ACCEPTED
                     ? "Félicitations ! Votre candidature a été acceptée"
                     : "Votre candidature n'a malheureusement pas été retenue";
 

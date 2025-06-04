@@ -11,4 +11,5 @@ public interface NotificationService {
     List<NotificationDto> getAllNotificationsByUserId(UUID userId);
     NotificationDto updateNotificationReadStatus(UUID notificationId, boolean isRead) throws NotFoundException;
     List<NotificationDto> getUnreadNotificationsByUserId(UUID userId);
+
 }
