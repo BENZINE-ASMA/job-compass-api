@@ -20,4 +20,6 @@ public interface ApplicationService {
     List<ApplicationDTO> getApplicantsByJobId(UUID jobId);
 
     ApplicationDTO updateApplicationStatus(UUID applicationId, ApplicationStatus status);
+
+    ApplicationDTO getApplicationById(UUID applicationId);
 }

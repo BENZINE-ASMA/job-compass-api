@@ -55,6 +55,12 @@ public class ApplicationController {
                 .body(saved);
     }
 
+    @GetMapping("/applications")
+    public ResponseEntity<ApplicationDTO> getApplicationById(@RequestParam UUID id) {
+        ApplicationDTO applications = applicationService.getApplicationById(id);
+        return ResponseEntity.ok(applications);
+    }
+
     @GetMapping("/users/{userId}/applications")
     @Operation(
             summary = "Récupérer les candidatures d'un utilisateur",
@@ -100,7 +106,7 @@ public class ApplicationController {
             @ApiResponse(responseCode = "404", description = "Candidature non trouvée"),
             @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
     })
-    public ResponseEntity<Void> updateApplicationStatus(
+    public ResponseEntity<ApplicationDTO> updateApplicationStatus(
             @Parameter(description = "ID de la candidature", required = true)
             @PathVariable UUID applicationId,
             @Valid @RequestBody UpdateApplicationStatusDTO updateDTO) {
@@ -109,6 +115,7 @@ public class ApplicationController {
                 applicationId,
                 updateDTO.getStatus()
         );
+
         if (updateDTO.getStatus() == ApplicationStatus.ACCEPTED || updateDTO.getStatus() == ApplicationStatus.REJECTED) {
             Application application = applicationService.findById(applicationId)
                     .orElseThrow(() -> new NotFoundException("Application not found"));
@@ -124,6 +131,6 @@ public class ApplicationController {
             notificationDto.setMessage(message);
             notificationService.createNotification(notificationDto);
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(updated);
     }
 }

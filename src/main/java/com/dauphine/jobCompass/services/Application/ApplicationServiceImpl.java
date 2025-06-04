@@ -103,4 +103,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return applicationMapper.toDto(saved);
     }
+
+    @Override
+    public ApplicationDTO getApplicationById( UUID applicationId) {
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new ApplicationNotFoundException("Application not found: " + applicationId));
+        return applicationMapper.toDto(application);
+    }
 }
