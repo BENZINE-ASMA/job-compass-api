@@ -5,14 +5,12 @@ import com.dauphine.jobCompass.dto.Notification.NotificationDto;
 import com.dauphine.jobCompass.services.Notification.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1/notifications")
 @Tag(name = "Notifications", description = "API de gestion des notifications")
