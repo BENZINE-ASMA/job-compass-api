@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -48,7 +49,10 @@ public class UserServiceImpl implements UserService {
         this.companyService = companyService;
         this.passwordEncoder = passwordEncoder;
     }
-
+    @Override
+    public Optional<User> findById(UUID userId) {
+        return userRepository.findById(userId);
+    }
     @Override
     public SimpleUserDTO create(UserCreationRequest request) {
 

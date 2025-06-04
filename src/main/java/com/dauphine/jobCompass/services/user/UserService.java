@@ -9,11 +9,12 @@ import com.dauphine.jobCompass.model.User;
 import com.dauphine.jobCompass.model.enums.UserType;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
     SimpleUserDTO create(UserCreationRequest request);
-
+    Optional<User> findById(UUID userId);
     List<UserDTO> getAll();
     List<SimpleUserDTO> getAllSimpleUsers();
     SimpleUserDTO getSimpleUserByEmail(String email);

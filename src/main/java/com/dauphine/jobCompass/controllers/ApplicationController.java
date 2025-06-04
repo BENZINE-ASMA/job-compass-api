@@ -2,15 +2,17 @@ package com.dauphine.jobCompass.controllers;
 
 import com.dauphine.jobCompass.dto.Application.ApplicationDTO;
 import com.dauphine.jobCompass.dto.Application.ApplicationRequestDTO;
-import com.dauphine.jobCompass.dto.Application.UpdateApplicationStatusDTO;
+import com.dauphine.jobCompass.dto.Notification.NotificationDto;
+import com.dauphine.jobCompass.exceptions.NotFoundException;
+import com.dauphine.jobCompass.model.Application;
 import com.dauphine.jobCompass.model.enums.ApplicationStatus;
 import com.dauphine.jobCompass.services.Application.ApplicationService;
+import com.dauphine.jobCompass.services.Notification.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +27,11 @@ import java.util.UUID;
 public class ApplicationController {
 
     private final ApplicationService applicationService;
+    private final NotificationService notificationService;
 
-    public ApplicationController(ApplicationService applicationService) {
+    public ApplicationController(ApplicationService applicationService , NotificationService notificationService) {
         this.applicationService = applicationService;
+        this.notificationService = notificationService;
     }
 
     @PostMapping("/applications")
@@ -88,14 +92,34 @@ public class ApplicationController {
             summary = "Mettre à jour le statut d'une candidature",
             description = "Modifier le statut d'une candidature existante"
     )
-    public ResponseEntity<ApplicationDTO> updateApplicationStatus(
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Statut mis à jour avec succès"),
+            @ApiResponse(responseCode = "400", description = "Statut invalide"),
+            @ApiResponse(responseCode = "404", description = "Candidature non trouvée"),
+            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
+    })
+    public ResponseEntity<Void> updateApplicationStatus(
+            @Parameter(description = "ID de la candidature", required = true)
             @PathVariable UUID applicationId,
-            @Valid @RequestBody UpdateApplicationStatusDTO updateDTO) {
+            @Parameter(description = "Nouveau statut de la candidature", required = true)
+            @RequestParam ApplicationStatus status) {
+        applicationService.updateApplicationStatus(applicationId, status);
+        if (status == ApplicationStatus.ACCEPTED || status == ApplicationStatus.REJECTED) {
+            Application application = applicationService.findById(applicationId)
+                    .orElseThrow(() -> new NotFoundException("Application not found"));
 
-        ApplicationDTO updated = applicationService.updateApplicationStatus(
-                applicationId,
-                updateDTO.getStatus()
-        );
-        return ResponseEntity.ok(updated);
+            NotificationDto notificationDto = new NotificationDto();
+            notificationDto.setCandidateId(application.getUser().getId());
+            notificationDto.setRecruiterId(application.getJob().getOwner().getId());
+            notificationDto.setApplicationId(applicationId);
+
+            String message = status == ApplicationStatus.ACCEPTED
+                    ? "Félicitations ! Votre candidature a été acceptée"
+                    : "Votre candidature n'a malheureusement pas été retenue";
+
+            notificationDto.setMessage(message);
+            notificationService.createNotification(notificationDto);
+        }
+        return ResponseEntity.ok().build();
     }
 }
