@@ -13,8 +13,8 @@ import java.util.UUID;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, UUID> {
     List<Notification> findByCandidateIdOrderByCreatedAtDesc(UUID candidateId);
-    List<Notification> findByCandidateIdAndIsReadFalseOrderByCreatedAtDesc(UUID candidateId);
+    List<Notification> findByCandidateIdAndReadFalseOrderByCreatedAtDesc(UUID candidateId);
     @Modifying
-    @Query("UPDATE Notification n SET n.isRead = true WHERE n.candidate = :userId AND n.isRead = false")
+    @Query("UPDATE Notification n SET n.read = true WHERE n.candidate = :userId AND n.read = false")
     void findByUserIdAndReadFalse(@Param("userId") String userId);
 }

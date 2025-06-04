@@ -12,7 +12,7 @@ public class NotificationDto {
     private UUID applicationId;
     private String applicationTitle;
     private String message;
-    private boolean isRead;
+    private boolean read;  // Simplifié: read au lieu de isRead
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
@@ -22,15 +22,15 @@ public class NotificationDto {
     }
 
     public NotificationDto(UUID id, UUID candidateId, UUID recruiterId,
-                            UUID applicationId, String applicationTitle,
-                           String message, boolean isRead, LocalDateTime createdAt) {
+                           UUID applicationId, String applicationTitle,
+                           String message, boolean read, LocalDateTime createdAt) {
         this.id = id;
         this.candidateId = candidateId;
         this.recruiterId = recruiterId;
         this.applicationId = applicationId;
         this.applicationTitle = applicationTitle;
         this.message = message;
-        this.isRead = isRead;
+        this.read = read;
         this.createdAt = createdAt;
     }
 
@@ -83,12 +83,12 @@ public class NotificationDto {
         this.message = message;
     }
 
-    public boolean isRead() {
-        return isRead;
+    public boolean isRead() {  // Convention: isRead() pour boolean
+        return read;
     }
 
-    public void setRead(boolean read) {
-        isRead = read;
+    public void setRead(boolean read) {  // setRead() cohérent avec le champ
+        this.read = read;
     }
 
     public LocalDateTime getCreatedAt() {

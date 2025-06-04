@@ -28,7 +28,7 @@ public class Notification {
     private String message;
 
     @Column(name = "is_read", nullable = false)
-    private Boolean isRead = false;
+    private Boolean read = false;  // Simplifié: read au lieu de isRead
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -42,6 +42,7 @@ public class Notification {
         this.recruiter = recruiter;
         this.application = application;
         this.message = message;
+        this.read = false;
     }
 
     // Getters et Setters
@@ -85,12 +86,12 @@ public class Notification {
         this.message = message;
     }
 
-    public Boolean getIsRead() {
-        return isRead;
+    public Boolean isRead() {  // Convention: isRead() pour boolean
+        return read;
     }
 
-    public void setIsRead(Boolean isRead) {
-        this.isRead = isRead;
+    public void setRead(Boolean read) {  // setRead() cohérent avec le champ
+        this.read = read;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -115,7 +116,7 @@ public class Notification {
                 ", recruiter=" + recruiter +
                 ", application=" + application +
                 ", message='" + message + '\'' +
-                ", isRead=" + isRead +
+                ", read=" + read +
                 ", createdAt=" + createdAt +
                 '}';
     }

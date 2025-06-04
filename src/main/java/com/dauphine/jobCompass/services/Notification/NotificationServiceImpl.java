@@ -49,7 +49,7 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setRecruiter(recruiter);
         notification.setApplication(application);
         notification.setMessage(notificationDto.getMessage());
-        notification.setIsRead(false);
+        notification.setRead(false);
 
         Notification savedNotification = notificationRepository.save(notification);
         return notificationMapper.toDto(savedNotification);
@@ -65,7 +65,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<NotificationDto> getUnreadNotificationsByUserId(UUID userId) {
-        return notificationRepository.findByCandidateIdAndIsReadFalseOrderByCreatedAtDesc(userId)
+        return notificationRepository.findByCandidateIdAndReadFalseOrderByCreatedAtDesc(userId)
                 .stream()
                 .map(notificationMapper::toDto)
                 .collect(Collectors.toList());
@@ -76,7 +76,7 @@ public class NotificationServiceImpl implements NotificationService {
     public NotificationDto updateNotificationReadStatus(UUID notificationId, boolean isRead) throws NotFoundException {
         Notification notification = notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new NotFoundException("Notification not found"));
-        notification.setIsRead(isRead);
+        notification.setRead(isRead);
         Notification updatedNotification = notificationRepository.save(notification);
         return notificationMapper.toDto(updatedNotification);
     }

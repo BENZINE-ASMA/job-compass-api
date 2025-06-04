@@ -48,7 +48,7 @@ public class NotificationController {
         return ResponseEntity.ok(notifications);
     }
 
-    @PutMapping("/{notificationId}/read-status")
+    @PatchMapping("/{notificationId}/read-status") // Changé de PUT à PATCH
     @Operation(summary = "Mettre à jour le statut de lecture d'une notification")
     public ResponseEntity<NotificationDto> updateReadStatus(
             @PathVariable UUID notificationId,
