@@ -1,10 +1,10 @@
 package com.dauphine.jobCompass.services.Application;
 
-
 import com.dauphine.jobCompass.dto.Application.ApplicationDTO;
 import com.dauphine.jobCompass.dto.Application.ApplicationRequestDTO;
 import com.dauphine.jobCompass.dto.User.SimpleUserDTO;
 import com.dauphine.jobCompass.exceptions.AlreadyAppliedException;
+import com.dauphine.jobCompass.exceptions.ApplicationNotFoundException;
 import com.dauphine.jobCompass.exceptions.JobNotFoundException;
 import com.dauphine.jobCompass.exceptions.UserNotFoundException;
 import com.dauphine.jobCompass.mapper.ApplicationMapper;
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -37,7 +36,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             JobRepository jobRepository,
             UserRepository userRepository,
             ApplicationMapper applicationMapper,
-            UserMapper  userMapper) {
+            UserMapper userMapper) {
         this.applicationRepository = applicationRepository;
         this.jobRepository = jobRepository;
         this.userRepository = userRepository;
@@ -66,16 +65,19 @@ public class ApplicationServiceImpl implements ApplicationService {
         app.setUser(user);
         app.setCoverLetter(dto.getCoverLetter());
         app.setResumeUrl(dto.getResumeUrl());
+        app.setStatus(ApplicationStatus.PENDING); // ✅ Utilise enum
         app.setCreatedAt(LocalDateTime.now());
 
         Application saved = applicationRepository.save(app);
         return applicationMapper.toDto(saved);
     }
+
     @Override
     public List<ApplicationDTO> getApplicationsByUserId(UUID userId) {
         List<Application> applications = applicationRepository.findByUserId(userId);
         return applicationMapper.toDtoList(applications);
     }
+
     @Override
     public List<ApplicationDTO> getApplicantsByJobId(UUID jobId) {
         List<Application> applications = applicationRepository.findByJobId(jobId);
@@ -83,9 +85,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void updateApplicationStatus(UUID applicationId, ApplicationStatus status) {
-        applicationRepository.updateApplicationStatus(applicationId, status.toLowerCase());
+    public ApplicationDTO updateApplicationStatus(UUID applicationId, ApplicationStatus status) {
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new ApplicationNotFoundException("Application not found: " + applicationId));
+
+        application.setStatus(status);
+        Application saved = applicationRepository.save(application);
+
+        return applicationMapper.toDto(saved);
     }
-
-
 }

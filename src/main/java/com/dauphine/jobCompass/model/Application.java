@@ -1,4 +1,5 @@
 package com.dauphine.jobCompass.model;
+import com.dauphine.jobCompass.model.enums.ApplicationStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -26,8 +27,9 @@ public class Application {
     @Column(name = "resume_url")
     private String resumeUrl;
 
-    @Column(length = 10)
-    private String status = "pending";
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 10)
+    private ApplicationStatus status = ApplicationStatus.PENDING;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -64,11 +66,11 @@ public class Application {
         this.coverLetter = coverLetter;
     }
 
-    public String getStatus() {
+    public ApplicationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ApplicationStatus status) {
         this.status = status;
     }
 

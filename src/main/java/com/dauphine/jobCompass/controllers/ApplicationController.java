@@ -2,6 +2,7 @@ package com.dauphine.jobCompass.controllers;
 
 import com.dauphine.jobCompass.dto.Application.ApplicationDTO;
 import com.dauphine.jobCompass.dto.Application.ApplicationRequestDTO;
+import com.dauphine.jobCompass.dto.Application.UpdateApplicationStatusDTO;
 import com.dauphine.jobCompass.model.enums.ApplicationStatus;
 import com.dauphine.jobCompass.services.Application.ApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -86,18 +88,14 @@ public class ApplicationController {
             summary = "Mettre à jour le statut d'une candidature",
             description = "Modifier le statut d'une candidature existante"
     )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Statut mis à jour avec succès"),
-            @ApiResponse(responseCode = "400", description = "Statut invalide"),
-            @ApiResponse(responseCode = "404", description = "Candidature non trouvée"),
-            @ApiResponse(responseCode = "500", description = "Erreur interne du serveur")
-    })
-    public ResponseEntity<Void> updateApplicationStatus(
-            @Parameter(description = "ID de la candidature", required = true)
+    public ResponseEntity<ApplicationDTO> updateApplicationStatus(
             @PathVariable UUID applicationId,
-            @Parameter(description = "Nouveau statut de la candidature", required = true)
-            @RequestParam ApplicationStatus status) {
-        applicationService.updateApplicationStatus(applicationId, status);
-        return ResponseEntity.ok().build();
+            @Valid @RequestBody UpdateApplicationStatusDTO updateDTO) {
+
+        ApplicationDTO updated = applicationService.updateApplicationStatus(
+                applicationId,
+                updateDTO.getStatus()
+        );
+        return ResponseEntity.ok(updated);
     }
 }
